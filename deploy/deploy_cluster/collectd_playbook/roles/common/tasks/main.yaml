@@ -1,0 +1,12 @@
+---
+
+- include: redhat.yaml
+  when: ansible_os_family == "RedHat"
+
+- include: ubuntu.yaml
+  when: ansible_os_family == "Debian"
+
+- include: settings.yaml
+
+- name: Restart collectd
+  service: name=collectd state=restarted

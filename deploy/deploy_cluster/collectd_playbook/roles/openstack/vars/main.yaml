@@ -1,0 +1,56 @@
+---
+
+processes:
+  apache: apache2
+  cinder_api: '"cinder.+api"'
+  cinder_scheduler: '"cinder.+scheduler"'
+  cinder_volume: '"cinder.+volume"'
+  collectd: collectd
+  glance_api: '"glance.+api "'
+  glance_registry: '"glance.+registry"'
+  heat_api_cfn: '"heat.+api.+cfn"'
+  heat_api_cloudwatch: '"heat.+api.+cloudwatch"'
+  heat_api: '"heat.+api "'
+  heat_engine: '"heat.+engine"'
+  keystone_admin: '"keystone.+admin"'
+  keystone_main: '"keystone.+main"'
+  neutron_dhcp_agent: '"neutron.+dhcp.+agent"'
+  neutron_metadata_agent: '"neutron.+metadata.+agent"'
+  neutron_ns_metadata_proxy: '"neutron.+ns.+metadata.+proxy"'
+  neutron_ovs_agent: '"neutron.+openvswitch.+agent"'
+  neutron_server: '"neutron.+server"'
+  nova_api: '"nova.+api"'
+  nova_cert: '"nova.+cert"'
+  nova_compute: '"nova.+compute"'
+  nova_conductor: '"nova.+conductor"'
+  nova_consoleauth: '"nova.+consoleauth"'
+  nova_novncproxy: '"nova.+novncproxy"'
+  nova_objectstore: '"nova.+objectstore"'
+  nova_scheduler: '"nova.+scheduler"'
+  ovsdb_server: '"ovs.+server"'
+  ovs_switch: '"ovs.+vswitchd"'
+  swift_account_replicator: '"swift.+account.+replicator"'
+  swift_account_server: '"swift.+account.+server"'
+  swift_container_auditor: '"swift.+container.+auditor"'
+  swift_container_replicator: '"swift.+container.+replicator"'
+  swift_container_server: '"swift.+container.+server"'
+  swift_container_sync: '"swift.+container.+sync"'
+  swift_container_updater: '"swift.+container.+updater"'
+  swift_object_replicator: '"swift.+object.+replicator"'
+  swift_object_server: '"swift.+object.+server"'
+  swift_object_updater: '"swift.+object.+updater"'
+  swift_proxy_server: '"swift.+proxy.+server"'
+
+logs:
+  - cinder
+  - glance
+  - heat
+  - keystone
+  - neutron
+  - nova
+  - atop
+  - corosync
+  - mysql
+  - openvswitch
+  - rabbitmq
+  - swift

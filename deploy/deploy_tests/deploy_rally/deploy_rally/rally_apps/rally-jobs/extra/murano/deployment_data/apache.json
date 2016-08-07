@@ -1,0 +1,10 @@
+{
+  "instance": {
+    "flavor": "m1.small"
+    "image": "DebianMuranoImage",
+    "?": {
+      "type": "io.murano.resources.LinuxMuranoInstance",
+      "id": "12345"
+    },
+    "name": "MuranoApache"
+}

@@ -1,0 +1,287 @@
+- job-template:
+    name: '{env}-env-deploy-fuel'
+    description: 'Deploy Fuel on ENV {env}'
+    display-name: '02 Deploy Fuel on ENV {env}'
+    node: 'fuel-masternode'
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - bool:
+            name: FROM_SNAPSHOT
+            default: false
+            description: "If selected ISO_CUSTOM_URL will be ignored"
+        - string:
+            name: ISO_URL
+            description:
+                !include-raw: descriptions/ISO_CUSTOM_URL
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw: descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw: descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+             |
+             export ENV={env}
+             if [ -x deploy/deploy_fuel/deploy_fuel_rackspace_lab.sh ]; then
+                 deploy/deploy_fuel/deploy_fuel_rackspace_lab.sh
+             else
+                 deploy/deploy_fuel/deploy_fuel_intel_lab.sh
+             fi
+
+- job-template:
+    name: '{env}_apply_workarounds'
+    description: 'Run scripts on ENV {env}'
+    display-name: '11 Run scripts on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw: descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw: descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+             |
+             export LAB_NAME=rackspace-1
+             export FUEL_IP=172.20.8.6{env}
+             $WORKSPACE/workarounds/apply_workarounds.sh
+
+- job-template:
+    name: '{env}-env-deploy-cluster'
+    description: 'Deploy cluster on ENV {env}'
+    display-name: '03 Deploy cluster on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 200
+      numToKeep: 300
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw: descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw: descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - bool:
+            name: CONFIGURE_ONLY
+            default: false
+            description: "Only create environment and configure it, but do not deploy"
+        - string:
+            name: CONTROLLER_COUNT
+            default: '3'
+            description: "Number of controllers"
+        - string:
+            name: COMPUTE_COUNT
+            default: '{compute_nodes}'
+            description: "Number of compute nodes"
+        - string:
+            name: CEPH_COUNT
+            default: '{ceph_nodes}'
+            description: "Number of ceph nodes"
+        - string:
+            name: CONTROLLER_MAC_LIST
+            default: '{mac_list}'
+            description: "List of controllers MACs, use ; as delimiter"
+        - choice:
+            name: MAIN_OS
+            choices:
+                - 'ubuntu'
+                - 'centos'
+            description: "Operating system for all nodes"
+        - choice:
+            name: PROVISION_METHOD
+            choices:
+                - 'image'
+                - 'cobbler'
+            description: "Nodes provision method"
+        - choice:
+            name: SEGMENTATION_TYPE
+            choices:
+                - 'vlan'
+                - 'tun'
+                - 'gre'
+            description: "Neutron segmentation type (VLAN/GRE/XVLAN)"
+        - bool:
+            name: DVR_ENABLE
+            default: true
+            description: "Enable DVR"
+        - bool:
+            name: MURANO
+            default: false
+            description: "Install Murano - The application catalog"
+        - bool:
+            name: SAHARA
+            default: false
+            description: "Install Sahara - provision and manage Hadoop clusters"
+        - bool:
+            name: CEILOMETER
+            default: false
+            description: "Telemetry Service that provides a Single Point Of Contact for billing systems"
+        - bool:
+            name: VOLUMES_LVM
+            default: false
+            description: "Cinder LVM over iSCSI for volumes"
+        - bool:
+            name: VOLUMES_CEPH
+            default: true
+            description: "Ceph RBD for volumes (Cinder)"
+        - bool:
+            name: IMAGES_CEPH
+            default: true
+            description: "Ceph RBD for images"
+        - bool:
+            name: EPHEMERAL_CEPH
+            default: true
+            description: "Ceph RBD for ephemeral volumes (NOVA)"
+        - bool:
+            name: OBJECTS_CEPH
+            default: true
+            description: "Ceph RadosGW for objects"
+        - bool:
+            name: DEBUG
+            default: true
+            description: "Enable debug messages"
+        - bool:
+            name: NOVA_QUOTA
+            default: true
+            description: "Enable quotas on compute nodes"
+        - bool:
+            name: NETWORK_VERIFICATION
+            default: false
+            description: "Enable network verification after deploy"
+        - bool:
+            name: LMA
+            default: false
+            description: "Deploy LMA toolchain"
+        - choice:
+            name: LMA_VERSION
+            choices:
+                - 'stable/0.7'
+                - 'stable/0.8'
+                - 'last_stable'
+                - 'origin/master'
+            description: "Version of LMA to be installed. Set to last_stable to get the last stable versions of Kibana and Grafana"
+        - string:
+            name: POWER_ON_DELAY
+            default: '2'
+            description: "Delay between nodes power on"
+        - text:
+            name: EXTRA_REPOSITORIES
+            description:
+                !include-raw: descriptions/EXTRA_REPOSITORIES
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+             |
+             export LAB_NAME=rackspace-1
+             export ENV_NUMBER={env}
+             export FUEL_IP=172.20.8.6${env}
+             export MANAGEMENT_VLAN={managment_vlan}
+             export PUBLIC_VLAN={public_vlan}
+             export STORAGE_VLAN={storage_vlan}
+             export PUBLIC_RANGE={public_range}
+             export FLOATING_RANGE={floating_range}
+             export GATEWAY={gateway}
+             export CIDR={cdir}
+             export STORAGE_NETWORK=10.3${env}.0.0/16
+             export MANAGEMENT_NETWORK=10.4${env}.0.0/16
+             export PRIVATE_NETWORK=10.5${env}.0.0/16
+             export FLOATING_VLAN_RANGE={floating_vlan_range}
+             export ETH0=ens1f0
+             export ETH1=ens1f1
+             export ETH2=ens4f0
+             export ETH3=ens4f1
+             export UBUNTU_REPOSITORY="none"
+             export INFLUXDB_SERVER={influxdb_server}
+             export ELASTICSEARCH_SERVER={elasticsearch_server}
+             $WORKSPACE/deploy/deploy_cluster/deploy_cluster.sh

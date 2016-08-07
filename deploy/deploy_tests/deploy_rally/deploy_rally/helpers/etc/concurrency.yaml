@@ -1,0 +1,108 @@
+# YAML file describing if scenario can be used in parallel with others and
+# what services are hardly loaded with it
+# Scenarios are grouped by sections regarding services they refer to
+
+ceilometer:
+    create-alarm.yaml: 1 ceilometer
+    create-and-delete-alarm.yaml: 1 ceilometer
+    create-and-list-alarm.yaml: 1 ceilometer
+    create-and-query-alarm-history.yaml: 1 ceilometer
+    create-and-query-alarms.yaml: 1 ceilometer
+    create-and-query-samples.yaml: 1 ceilometer
+    create-and-update-alarm.yaml: 1 ceilometer
+    create-meter-and-get-stats.yaml: 1 ceilometer
+    list-alarms.yaml: 1 ceilometer
+    list-meters.yaml: 1 ceilometer
+    list-resources.yaml: 1 ceilometer
+cinder:
+    create-and-attach-volume.yaml: 1 cinder,nova,keystone
+    create-and-delete-snapshot.yaml: 1 cinder
+    create-and-delete-volume.yaml: 1 cinder
+    create-and-extend-volume.yaml: 1 cinder
+    create-and-list-snapshots.yaml: 1 cinder
+    create-and-list-volume.yaml: 1 cinder
+    create-and-upload-volume-to-image.yaml: 1 cinder,glance
+    create-from-volume-and-delete-volume.yaml: 1 cinder
+    create-nested-snapshots-and-attach-volume.yaml: 1 cinder,glance
+    create-snapshot-and-attach-volume.yaml: 1 cinder,glance,nova
+glance:
+    create-and-delete-image.yaml: 1 glance
+    create-and-list-image.yaml: 1 glance
+    create-image-and-boot-instances.yaml: 1 glance,nova
+    list_images.yaml: 1 glance
+heat:
+    create-and-delete-stack.yaml: 1 nova,heat,neutron,keystone
+    create-and-delete-stack_with_neutron.yaml: 1 nova,heat,neutron,keystone
+    create-and-delete-stack_with_volume.yaml: 1 nova,heat,neutron,cinder,keystone
+    create-and-list-stack.yaml: 1 nova,heat,neutron,keystone
+    create-check-delete-stack.yaml: 1 nova,heat,neutron,keystone
+    create-suspend-resume-delete-stack.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-add-res.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-del-res.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-increase.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-inplace.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-reduce.yaml: 1 nova,heat,neutron,keystone
+    create-update-delete-stack-replace.yaml: 1 nova,heat,neutron,keystone
+    list-stack-and-resources.yaml: 1 nova,heat,neutron,keystone
+keystone:
+    assign_and_remove_user_role.yaml: 0 keystone
+    create-and-delete-user.yaml: 0 keystone
+    create-and-list-tenants.yaml: 0 keystone
+    create-and-list-users.yaml: 0 keystone
+    create-tenant-with-users.yaml: 0 keystone
+    create_and_delete_role.yaml: 0 keystone
+    create_and_delete_service.yaml: 0 keystone
+    create_and_list_roles.yaml: 0 keystone
+    get_entities.yaml: 0 keystone
+    get_token_scenario.yaml: 0 keystone
+    token-create-and-use-for-auth.yaml: 0 keystone
+    update_and_delete_tenant.yaml: 0 keystone
+    update_user_password.yaml: 0 keystone
+mox:
+    boot_server_with_network_in_single_tenant.yaml: 0 nova,neutron,keystone
+neutron:
+    create_and_delete_networks.yaml: 1 neutron
+    create_and_delete_ports.yaml: 1 neutron
+    create_and_delete_routers.yaml: 1 neutron
+    create_and_delete_secgroups.yaml: 1 neutron
+    create_and_delete_routers.yaml: 1 neutron
+    create_and_delete_subnets.yaml: 1 neutron
+    create_and_list_networks.yaml: 1 neutron
+    create_and_list_ports.yaml: 1 neutron
+    create_and_list_routers.yaml: 1 neutron
+    create_and_list_secgroups.yaml: 1 neutron
+    create_and_list_subnets.yaml: 1 neutron
+    create_and_update_networks.yaml: 1 neutron
+    create_and_update_ports.yaml: 1 neutron
+    create_and_update_routers.yaml: 1 neutron
+    create_and_update_subnets.yaml: 1 neutron
+    update_quotas.yaml: 1 neutron
+nova:
+    boot_and_bounce_server.yaml: 1 neutron,nova,keystone
+    boot_and_delete_server.yaml: 1 neutron,nova,keystone
+    boot_and_delete_server_with_keypair.yaml: 1 neutron,nova,keystone
+    boot_and_delete_server_with_neutron_secgroups.yaml: 1 neutron,nova,keystone
+    boot_and_delete_server_with_secgroups.yaml: 1 neutron,nova,keystone
+    boot_and_list_server.yaml: 1 neutron,nova,keystone
+    boot_and_list_server_batch_all_at_once.yaml: 1 neutron,nova,keystone
+    boot_and_list_server_batch_x10.yaml: 0 neutron,nova,keystone
+    boot_and_live_migrate_server.yaml: 1 neutron,nova,keystone
+    boot_and_migrate_server.yaml: 1 neutron,nova,keystone
+    boot_and_rebuild_server.yaml: 1 neutron,nova,keystone
+    boot_server_attach_created_volume_and_live_migrate.yaml: 1 neutron,nova,keystone,cinder
+    boot_server_from_volume_and_delete.yaml: 1 neutron,nova,keystone,cinder
+    boot_server_from_volume_and_live_migrate.yaml: 1 neutron,nova,keystone
+    create_and_delete_keypair.yaml: 1 nova,keystone
+    create_and_delete_secgroups.yaml: 1 neutron,nova,keystone
+    create_and_list_keypairs.yaml: 1 nova,keystone
+    create_and_list_secgroups.yaml: 1 neutron,nova,keystone
+    nova-update-and-delete.yaml: 1 neutron,nova,keystone
+    pause_and_unpause.yaml: 1 neutron,nova,keystone
+    resize_server.yaml: 1 nova,keystone
+    snapshot_server.yaml: 1 neutron,nova,glance,keystone
+    suspend_and_resume.yaml: 1 nova,keystone
+sahara:
+    create_and_delete_vanilla_cluster.json: 0 nova,keystone,neutron
+    create_and_list_nodegroup_templates.json: 1 sahara
+vm:
+    boot_runcommand_delete.yaml: 1 neutron,nova,keystone

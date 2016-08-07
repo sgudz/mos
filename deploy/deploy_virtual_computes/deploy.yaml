@@ -1,0 +1,43 @@
+---
+- hosts: cluster
+  remote_user: root
+  vars:
+    # v_mem: 67108864
+    # v_mem: 33 554 432
+    v_mem: 26402000
+    v_cpu: 4
+  tasks:
+    - name: install libvirt
+      apt: name={{ item }} state=present
+      with_items:
+      - libvirt-bin
+      - qemu-kvm
+      - python-libvirt
+      - python-lxml
+    - command: swapoff -a
+    - virt_pool: command=define name=default xml='{{ lookup("file", "templates/default-pool.xml") }}'
+    - virt_pool: state=active name=default
+    - virt_pool: autostart=yes name=default
+    - name: Stop old VMs
+      virt: name=v_compute_{{ item }}
+            state=destroyed
+      with_sequence: count={{ nodes }}
+      ignore_errors: True
+    - name: Delete old VMs
+      virt: name=v_compute_{{ item }}
+            command=undefine
+      with_sequence: count={{ nodes }}
+      ignore_errors: True
+    - name: Сreate hdd images
+      command: qemu-img create -f qcow2 /var/lib/libvirt/images/v_compute_{{ item }}.qcow2 100G
+      with_sequence: count={{ nodes }}
+    - virt_pool: command=stop name=default
+    - virt_pool: state=active name=default
+    - virt: name=v_compute_{{ item }}
+            command=define
+            xml="{{ lookup('template', 'templates/v_compute.j2.xml') }}"
+      with_sequence: count={{ nodes }}
+    - name: Start all VMs
+      virt: name=v_compute_{{ item }}
+            state=running
+      with_sequence: count={{ nodes }}

@@ -1,0 +1,21 @@
+---
+
+collectd:
+  dirs:
+    base: /var/log/collectd
+    conf: /etc/collectd.d
+  pidfile: /var/run/collectd.pid
+  vars:
+    interval: 15
+  plugins:
+    - syslog
+    - cpu
+    - disk
+    - fscache
+    - load
+    - memory
+    - swap
+    - interface
+  network:
+    host: fuel
+    port: 25826

@@ -1,0 +1,36 @@
+    <table id="{{ executor }}_table" class="compact">
+    {% for t_tag in ["thead", "tfoot"] %}
+        <{{ t_tag}}>
+            <tr bgcolor="#FFE4B5">
+                <th>#</th>
+                <th>Build</th>
+                <th>Type</th>
+                <th>Jenkins job</th>
+                <th>OS</th>
+                <th>Options</th>
+                <th>Nodes</th>
+                <th>Job started</th>
+                <th>Job finished</th>
+                <th>Results</th>
+            </tr>
+        </{{ t_tag}}>
+    {% endfor %}
+        <tbody>
+        {% for count in range(0, tests[executor]|length) %}
+            <tr class="success">
+                <td>{{ count }}</td>
+                <td>{{ tests[executor][count].build }}</td>
+                <td>{{ tests[executor][count].type }}</td>
+                <td><a href="{{ tests[executor][count].jenkins_job.url }}">{{ tests[executor][count].jenkins_job.name }}</a></td>
+                <td>{{ tests[executor][count].job_os }}</td>
+                <td><b>Components:</b>{{ tests[executor][count].components }}<br />
+                    <b>Storage:</b>{{ tests[executor][count].storage }}
+                </td>
+                <td>{{ tests[executor][count].job_nodes }}</td>
+                <td>{{ tests[executor][count].job_start_date }}</td>
+                <td>{{ tests[executor][count].job_end_date }}</td>
+                <td><a href="{{ tests[executor][count].results_url }}">click to me</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

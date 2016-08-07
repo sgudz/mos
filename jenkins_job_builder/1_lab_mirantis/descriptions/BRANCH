@@ -1,0 +1,5 @@
+<span style="color: green;">Set origin/master for using code from master</span>
+<br>
+<span style="color: green;">Set FETCH_HEAD for using code from review</span>
+<br>
+<span style="color: red;">Leave default for stable tag</span>

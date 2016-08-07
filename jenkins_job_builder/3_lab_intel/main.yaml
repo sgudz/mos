@@ -1,0 +1,52 @@
+- job-group:
+    name: 1-env
+    jobs:
+        - '{env}-env-deploy-fuel'
+        - '{env}_apply_workarounds'
+        - '{env}-env-deploy-cluster'
+        - '{env}_env_run_rally'
+
+- job-group:
+    name: 2-env
+    jobs:
+        - '{env}-env-deploy-fuel'
+        - '{env}_apply_workarounds'
+        - '{env}-env-deploy-cluster'
+        - '{env}_env_run_rally'
+
+
+- project:
+    name: project
+    jobs:
+        - 1-env:
+            env: 1
+            master_node: master
+            compute_nodes: 450
+            ceph_nodes: 50
+            managment_vlan: 132
+            public_vlan: 133
+            storage_vlan: 134
+            public_range: 10.3.60.70-10.3.61.200
+            floating_range: 10.3.61.200-10.3.62.255
+            gateway: 10.3.56.1
+            cdir: 10.3.56.0/21
+            floating_vlan_range: 138-140
+            influxdb_server: 172.20.9.38
+            elasticsearch_server: 172.20.9.39
+            mac_list:
+        - 2-env:
+            env: 2
+            master_node: master
+            compute_nodes: 131
+            ceph_nodes: 20
+            managment_vlan: 135
+            public_vlan: 136
+            storage_vlan: 137
+            public_range: 10.3.63.0-10.3.63.200
+            floating_range: 10.3.63.201-10.3.63.254
+            gateway: 10.3.56.1
+            cdir: 10.3.56.0/21
+            floating_vlan_range: 141-159
+            influxdb_server: 172.20.9.38
+            elasticsearch_server: 172.20.9.39
+            mac_list:

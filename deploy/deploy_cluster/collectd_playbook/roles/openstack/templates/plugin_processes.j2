@@ -1,0 +1,7 @@
+LoadPlugin processes
+
+<Plugin processes>
+{% for name, regexp in processes.iteritems() %}
+    ProcessMatch {{ name }} {{ regexp }}
+{% endfor %}
+</Plugin>

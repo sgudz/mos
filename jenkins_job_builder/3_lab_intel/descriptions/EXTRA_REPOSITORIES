@@ -1,0 +1,7 @@
+Additional Ubuntu repositories for nodes, one per line.
+<br>
+<span style="color: green;">Format: &lt;name&gt; &lt;type&gt; &lt;URI&gt; &lt;suite&gt; &lt;section1&gt; [&lt;section2&gt; ... &lt;sectionN&gt;] &lt;priority&gt;</span>
+<br>
+<span style="color: green;">Example: updates-7_0_mu1  deb http://mirror.fuel-infra.org/mos-repos/ubuntu/7.0 mos7.0-proposed main restricted 1200</span>
+<br>
+<span style="color: red;">Leave blank if not needed</span>

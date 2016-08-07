@@ -1,0 +1,4 @@
+[gerrit]
+host=gerrit.mirantis.com
+port=29418
+project=mos-scale/mos-scale.git

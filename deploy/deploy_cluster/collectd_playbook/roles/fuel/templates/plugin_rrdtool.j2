@@ -1,0 +1,9 @@
+LoadPlugin rrdtool
+
+<Plugin rrdtool>
+    DataDir          "{{ rrdtool.datadir }}"
+    CreateFilesAsync {{ rrdtool.create_files_async }}
+    CacheTimeout     {{ rrdtool.cache.timeout }}
+    CacheFlush       {{ rrdtool.cache.flush }}
+    WritesPerSecond  {{ rrdtool.writes_per_second }}
+</Plugin>

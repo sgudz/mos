@@ -1,0 +1,24 @@
+- job-group:
+    name: 10-env
+    jobs:
+        - '{env}_env_run_tempest'
+
+- job-group:
+    name: 11-env
+    jobs:
+        - '{env}_env_run_tempest'
+
+- job-group:
+    name: 12-env
+    jobs:
+        - '{env}_env_run_tempest'
+
+- job-group:
+    name: 13-env
+    jobs:
+        - '{env}_env_run_tempest'
+
+- job-group:
+    name: 14-env
+    jobs:
+        - '{env}_env_run_tempest'

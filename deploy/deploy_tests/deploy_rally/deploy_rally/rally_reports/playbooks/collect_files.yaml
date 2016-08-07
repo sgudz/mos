@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+  - name: collect remote staff
+    script: ../scripts/collect_server_info.sh
+  - name: fetch remote files
+    fetch: src=/root/server_description.tar.gz dest=/data/rally/artifacts/{{inventory_hostname}}.tar.gz flat=yes

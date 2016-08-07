@@ -1,0 +1,7 @@
+ipaddr
+libvirt-python
+python-csv
+SQLAlchemy
+prettytable
+flask
+psycopg2

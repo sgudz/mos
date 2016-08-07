@@ -1,0 +1,79 @@
+<form id="shadow_form" action="" method="POST" style="display: none;">
+<input name="action" type="text">
+<input name="record_id" type="text">
+<textarea name="bug_id"> </textarea>
+<textarea name="description"> </textarea>
+<input name="contact_person" type="text">
+<textarea name="job_settings"> </textarea>
+<textarea name="log_snapshot"> </textarea>
+</form>
+
+<script type="text/javascript">
+function Enable_Button(button) {
+    button.disabled = false;
+}
+function Submit_changes(element) {
+    var table = document.getElementById('job_results_table');
+    var shadow_form = document.getElementById('shadow_form');
+    shadow_form.action.value = "Submit";
+    shadow_form.record_id.value = table.rows[element.parentNode.parentNode.rowIndex].cells[2].innerHTML;
+    shadow_form.bug_id.value = table.rows[element.parentNode.parentNode.rowIndex].cells[9].firstChild.value;
+    shadow_form.description.value = table.rows[element.parentNode.parentNode.rowIndex].cells[10].firstChild.value;
+    shadow_form.contact_person.value = table.rows[element.parentNode.parentNode.rowIndex].cells[11].firstChild.value;
+    shadow_form.job_settings.value = table.rows[element.parentNode.parentNode.rowIndex].cells[14].firstChild.value;
+    shadow_form.log_snapshot.value = table.rows[element.parentNode.parentNode.rowIndex].cells[12].firstChild.value;
+    shadow_form.submit();
+}
+</script>
+<form>
+    <table id="job_results_table" class="compact">
+    {% for t_tag in ["thead", "tfoot"] %}
+        <{{ t_tag}}>
+            <tr bgcolor="#FFE4B5">
+                <th>#</th>
+                <th>CHILD_LIST</th>
+                <th>ID</th>
+                <th>ENV</th>
+                <th>NAME</th>
+                <th>STARTED</th>
+                <th>ENDED</th>
+                <th>REPORT<th/>
+                <th>BUG_ID</th>
+                <th>DESCRIPTION</th>
+                <th>CONTACT</th>
+                <th>LOG_SNAPSHOT</th>
+                <th>UUID</th>
+                <th>PARENT_ID</th>
+                <th>Job Settings</th>
+                <th>JOB_TYPE</th>
+            </tr>
+        </{{ t_tag}}>
+    {% endfor %}
+        <tbody>
+        {% for count in range(0, records|length) %}
+                <td>{{ count }}</td>
+                <td><a href="{{request.url_root}}show_child/{{records[count].id}}">Show</a></td>
+                <td>{{ records[count].id }}</td>
+                <td>{{ records[count].env }}</td>
+                <td>{{ records[count].job_name }}</td>
+                <td>{{ records[count].started }}</td>
+                <td>{{ records[count].ended }}</td>
+                {% if records[count].report_dir %}
+                <td><a href="http://mos-scale.vm.mirantis.net/test_results/{{records[count].report_dir}}">Show_report</a></td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                <td><textarea name="bug_id" rows="6" oninput="Enable_Button(button{{count}})">{{ records[count].bug_id }}</textarea></td>
+                <td><textarea name="description" rows="6" oninput="Enable_Button(button{{count}})">{{ records[count].description }}</textarea></td>
+                <td><input name="contact_person" type="text" value={{ records[count].contact_person }} oninput="Enable_Button(button{{count}})"></td>
+                <td><textarea name="log_snapshot" rows="3" oninput="Enable_Button(button{{count}})">{{ records[count].log_snapshot }}</textarea></td>
+                <td>{{ records[count].uuid }}</td>
+                <td>{{ records[count].parent_job_id }}</td>
+                <td><textarea name="job_settings" rows="6" oninput="Enable_Button(button{{count}})">{{ records[count].job_settings }}</textarea></td>
+                <td>{{ records[count].job_type }}</td>
+                <td><input name="button{{count}}" type="button" value="Submit changes" disabled onclick="Submit_changes(this)"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>

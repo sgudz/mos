@@ -1,0 +1,900 @@
+- job-template:
+    name: '{env}-env-clean-up'
+    description: 'Cleanup ENV {env}'
+    display-name: '01 Cleanup ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+        - locks:
+            - ENV_{env}
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+    builders:
+        - shell:
+             |
+             export BUILD_NUMBER=1
+             export ENV_NUMBER={env}
+             export FUEL_IP=172.16.44.$ENV_NUMBER
+             export DELETE_ENV=true
+             if [ -f $WORKSPACE/jenkins/deploy_cluster/deploy_cluster.sh ]; then
+               $WORKSPACE/jenkins/deploy_cluster/deploy_cluster.sh
+             fi
+             if [ -f $WORKSPACE/deploy/deploy_cluster/deploy_cluster.sh ]; then
+               $WORKSPACE/deploy/deploy_cluster/deploy_cluster.sh
+             fi
+    publishers:
+        - email-ext-main
+
+- job-template:
+    name: '{env}-env-deploy-fuel'
+    description: 'Deploy Fuel on ENV {env}'
+    display-name: '02 Deploy Fuel on ENV {env}'
+    node: 'fuel-masternode'
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - bool:
+            name: FROM_SNAPSHOT
+            default: false
+            description: "If selected ISO_CUSTOM_URL will be ignored"
+        - string:
+            name: ISO_CUSTOM_URL
+            description:
+                !include-raw descriptions/ISO_CUSTOM_URL
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             export VLAN={env}
+             if [ -f $WORKSPACE/jenkins/deploy_fuel.sh ]; then
+               $WORKSPACE/jenkins/deploy_fuel.sh
+             fi
+             if [ -f $WORKSPACE/deploy/deploy_fuel/deploy_fuel.sh ]; then
+               $WORKSPACE/deploy/deploy_fuel/deploy_fuel.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+
+- job-template:
+    name: '{env}-env-deploy-cluster'
+    description: 'Deploy cluster on ENV {env}'
+    display-name: '03 Deploy cluster on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 200
+      numToKeep: 300
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - bool:
+            name: CONFIGURE_ONLY
+            default: false
+            description: "Only create environment and configure it, but do not deploy"
+        - string:
+            name: CONTROLLER_COUNT
+            default: '3'
+            description: "Number of controllers"
+        - string:
+            name: COMPUTE_COUNT
+            default: '{compute_nodes}'
+            description: "Number of compute nodes"
+        - string:
+            name: CEPH_COUNT
+            default: '{ceph_nodes}'
+            description: "Number of ceph nodes"
+        - string:
+            name: CONTROLLER_MAC_LIST
+            default: '{mac_list}'
+            description: "List of controllers MACs, use ; as delimiter"
+        - choice:
+            name: MAIN_OS
+            choices:
+                - 'ubuntu'
+                - 'centos'
+            description: "Operating system for all nodes"
+        - choice:
+            name: PROVISION_METHOD
+            choices:
+                - 'image'
+                - 'cobbler'
+            description: "Nodes provision method"
+        - choice:
+            name: SEGMENTATION_TYPE
+            choices:
+                - 'vlan'
+                - 'tun'
+                - 'gre'
+            description: "Neutron segmentation type (VLAN/GRE/XVLAN)"
+        - bool:
+            name: DVR_ENABLE
+            default: true
+            description: "Enable DVR"
+        - bool:
+            name: MURANO
+            default: false
+            description: "Install Murano - The application catalog"
+        - bool:
+            name: SAHARA
+            default: false
+            description: "Install Sahara - provision and manage Hadoop clusters"
+        - bool:
+            name: CEILOMETER
+            default: false
+            description: "Telemetry Service that provides a Single Point Of Contact for billing systems"
+        - bool:
+            name: VOLUMES_LVM
+            default: false
+            description: "Cinder LVM over iSCSI for volumes"
+        - bool:
+            name: VOLUMES_CEPH
+            default: true
+            description: "Ceph RBD for volumes (Cinder)"
+        - bool:
+            name: IMAGES_CEPH
+            default: true
+            description: "Ceph RBD for images"
+        - bool:
+            name: EPHEMERAL_CEPH
+            default: true
+            description: "Ceph RBD for ephemeral volumes (NOVA)"
+        - bool:
+            name: OBJECTS_CEPH
+            default: true
+            description: "Ceph RadosGW for objects"
+        - bool:
+            name: DEBUG
+            default: true
+            description: "Enable debug messages"
+        - bool:
+            name: NOVA_QUOTA
+            default: true
+            description: "Enable quotas on compute nodes"
+        - bool:
+            name: NETWORK_VERIFICATION
+            default: false
+            description: "Enable network verification after deploy"
+        - bool:
+            name: LMA
+            default: false
+            description: "Deploy LMA toolchain"
+        - choice:
+            name: LMA_VERSION
+            choices:
+                - 'stable/0.7'
+                - 'stable/0.8'
+                - 'last_stable'
+                - 'origin/master'
+            description: "Version of LMA to be installed. Set to last_stable to get the last stable versions of Kibana and Grafana"
+        - string:
+            name: POWER_ON_DELAY
+            default: '2'
+            description: "Delay between nodes power on"
+        - text:
+            name: EXTRA_REPOSITORIES
+            description:
+                !include-raw descriptions/EXTRA_REPOSITORIES
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export ENV_NUMBER={env}
+             export FUEL_IP=172.16.44.{env}
+             export MANAGEMENT_VLAN={env}0
+             export STORAGE_VLAN={env}1
+             export PUBLIC_RANGE={public_ip}
+             export FLOATING_RANGE={floating_ip}
+             export FLOATING_VLAN_RANGE={vlan_range}
+             export CIDR={cidr}
+             export GATEWAY={gateway}
+             if [ -f $WORKSPACE/jenkins/deploy_cluster/deploy_cluster.sh ]; then
+                $WORKSPACE/jenkins/deploy_cluster/deploy_cluster.sh
+             fi
+             if [ -f $WORKSPACE/deploy/deploy_cluster/deploy_cluster.sh ]; then
+                $WORKSPACE/deploy/deploy_cluster/deploy_cluster.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+
+- job-template:
+    name: '{env}-env-prepare-master'
+    description: 'Prepare tests on the Fuel on ENV {env}'
+    display-name: '04 Prepare tests on Fuel on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - choice:
+            name: RALLY_VERSION
+            description: Rally version
+            choices:
+                - 'last_stable'
+                - 'origin/master'
+                - '0.0.3'
+        - choice:
+            name: SCENARIOS_VERSION
+            description: Scenarios version
+            choices:
+                - 'origin/master'
+                - '0.2'
+                - '0.1'
+
+        - string:
+            name: RALLY_DATABASE
+            default: 'postgresql://rally:Ra11y@172.18.160.54/rally'
+            description: 'Path (URL) to Rally database in terms of SQLAlchemy'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             cd $WORKSPACE
+             if [ -f $WORKSPACE/jenkins/deploy_rally_tempest.sh ]; then
+                 $WORKSPACE/jenkins/deploy_rally_tempest.sh $WORKSPACE
+             fi
+             if [ -f $WORKSPACE/deploy/deploy_tests/deploy_tests.sh ]; then
+                 $WORKSPACE/deploy/deploy_tests/deploy_tests.sh $WORKSPACE
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+
+- job-template:
+    name: '{env}_env_run_rally'
+    description: 'Run rally tests on ENV {env}'
+    display-name: '06 Run rally tests on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - bool:
+            name: SHAKER_RUN
+            default: false
+        - choice:
+            name: LOAD_FACTOR
+            description:
+                !include-raw descriptions/LOAD_FACTOR
+            choices:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+        - choice:
+            name: SIM_RUNS
+            description:
+                !include-raw descriptions/SIM_RUNS
+            choices:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+        - bool:
+            name: ABORT_ON_SLA_FAILURE
+            default: true
+            description: 'Abort Rally task on SLA failure'
+        - string:
+            name: TESTRAIL_USER
+            default: 'dbelova@mirantis.com'
+            description: 'Username of TestRail user allowed to upload results'
+        - string:
+            name: TESTRAIL_PASSWORD
+            default: 'Scale12#'
+            description: 'Password for defined above user'
+        - string:
+            name: TESTRAIL_TEST_SUITE
+            default: 'Rally'
+            description: 'TestRail test suite name to where post results'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+        - bool:
+            name: SKIP_ON_BIG_SCALE
+            default: false
+            description: 'Skip tests that are dedicated to not be runned on big environments (>= 200 nodes)'
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             if [ -f $WORKSPACE/jenkins/run_tests.sh ]; then
+                $WORKSPACE/jenkins/run_tests.sh -r rally
+             fi
+             if [ -f $WORKSPACE/run_tests/run_rally.sh ]; then
+                $WORKSPACE/run_tests/run_rally.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+        - junit:
+            results: '*.xml'
+
+- job-template:
+    name: '{env}_env_run_rally_light'
+    description: 'Run light rally tests on ENV {env}'
+    display-name: '07 Run light rally tests on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - bool:
+            name: SHAKER_RUN
+            default: false
+        - choice:
+            name: SIM_RUNS
+            description:
+                !include-raw descriptions/SIM_RUNS
+            choices:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+        - bool:
+            name: ABORT_ON_SLA_FAILURE
+            default: false
+            description: 'Abort Rally task on SLA failure'
+        - string:
+            name: TESTRAIL_USER
+            default: 'dbelova@mirantis.com'
+            description: 'Username of TestRail user allowed to upload results'
+        - string:
+            name: TESTRAIL_PASSWORD
+            default: 'Scale12#'
+            description: 'Password for defined above user'
+        - string:
+            name: TESTRAIL_TEST_SUITE
+            default: 'Rally'
+            description: 'TestRail test suite name to where post results'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export SMOKE=1
+             export FUEL_IP=172.16.44.{env}
+             if [ -f $WORKSPACE/jenkins/run_tests.sh ]; then
+                $WORKSPACE/jenkins/run_tests.sh -r rally
+             fi
+             if [ -f $WORKSPACE/run_tests/run_rally.sh ]; then
+                $WORKSPACE/run_tests/run_rally.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+        - junit:
+            results: '*.xml'
+
+- job-template:
+    name: '{env}_env_run_rally_custom'
+    description: 'Run custom rally tests on ENV {env}'
+    display-name: '08 Run custom rally tests on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - string:
+            name: TESTS
+            description: 'Tests path'
+        - bool:
+            name: SHAKER_RUN
+            default: false
+        - choice:
+            name: LOAD_FACTOR
+            choices:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+        - bool:
+            name: ABORT_ON_SLA_FAILURE
+            default: false
+            description: 'Abort Rally task on SLA failure'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             export SIM_RUNS=1
+             if [ -f $WORKSPACE/jenkins/run_tests.sh ]; then
+                 $WORKSPACE/jenkins/run_tests.sh -r rally -t $TESTS
+             fi
+             if [ -f $WORKSPACE/run_tests/run_rally.sh ]; then
+                 $WORKSPACE/run_tests/run_rally.sh -t $TESTS
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+        - junit:
+            results: '*.xml'
+
+- job-template:
+    name: '{env}_env_busy'
+    description: 'Empty job for cluster reservation on ENV {env}'
+    display-name: '09 Reserve ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    parameters:
+      - string:
+          name: BUILD_DESCRIPTION
+          default: "No description provided"
+      - string:
+          name: BUG_ID
+          default: "N/A"
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             !include-raw-escape scripts/empty_script.sh
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+
+- job-template:
+    name: '{env}_env_run_shaker'
+    description: 'Run Shaker tests on ENV {env}'
+    display-name: '10 Run Shaker tests on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - choice:
+            name: EXECUTION_TYPE
+            choices:
+                - 'debug'
+                - 'scale'
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - choice:
+            name: TEST_SUBJECT
+            description: "Which component to test"
+            choices:
+                - 'networking'
+                - 'storage'
+        - string:
+            name: TEST_GLOB
+            default: '*.yaml'
+            description:
+                !include-raw descriptions/SHAKER_TEST_GLOB
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             export TEST_SUBJECT
+             export TEST_GLOB
+             rm -f *.html
+             rm -f *.log
+             if [ -f $WORKSPACE/jenkins/shaker.sh ]; then
+                 $WORKSPACE/jenkins/shaker.sh
+             fi
+             if [ -f $WORKSPACE/run_tests/run_shaker.sh ]; then
+                 $WORKSPACE/run_tests/run_shaker.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main
+        - archive:
+              artifacts: '*.html, *.log, *.json'
+
+- job-template:
+    name: '{env}_apply_workarounds'
+    description: 'Run scripts on ENV {env}'
+    display-name: '11 Run scripts on ENV {env}'
+    node: master
+    logrotate:
+      daysToKeep: 60
+      numToKeep: 100
+    properties:
+      - throttle:
+          categories:
+            - ENV_{env}
+          max-total: 1
+          option: category
+    wrappers:
+        - build-user-vars
+        - timestamps
+        - ansicolor:
+            colormap: xterm
+    scm:
+        - main-git
+    parameters:
+        - string:
+            name: REFSPEC
+            default: '+refs/heads/*:refs/remotes/origin/*'
+            description:
+                !include-raw descriptions/REFSPEC
+        - choice:
+            name: BRANCH
+            description:
+                !include-raw descriptions/BRANCH
+            choices:
+                - 'origin/master'
+                - 'FETCH_HEAD'
+                - '0.2'
+                - '0.0.7'
+                - '0.0.6'
+                - '0.0.5'
+        - string:
+            name: BUILD_DESCRIPTION
+            default: "No description provided"
+    builders:
+        - shell:
+            !include-raw scripts/register_in_db.py
+        - inject:
+            properties-file: $WORKSPACE/build.properties
+        - shell:
+             |
+             export FUEL_IP=172.16.44.{env}
+             if [ -f $WORKSPACE/jenkins/apply_workarounds.sh ]; then
+                $WORKSPACE/jenkins/apply_workarounds.sh
+             fi
+             if [ -f $WORKSPACE/workarounds/apply_workarounds.sh ]; then
+                $WORKSPACE/workarounds/apply_workarounds.sh
+             fi
+    publishers:
+        - post-tasks:
+          - matches:
+            - log-test:
+              operator: OR
+            script: !include-raw scripts/set_end_time_in_db.py
+        - email-ext-main

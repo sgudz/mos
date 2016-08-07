@@ -1,0 +1,16 @@
+---
+
+- name: Set processes
+  template: src=plugin_processes.j2 dest={{ collectd.dirs.conf }}/processes
+
+- name: Set logs
+  template: src=plugin_filecount.j2 dest={{ collectd.dirs.conf }}/filecount
+
+- name: Set df
+  template: src=plugin_df.j2 dest={{ collectd.dirs.conf }}/df
+
+- name: Set network
+  template: src=plugin_network.j2 dest={{ collectd.dirs.conf }}/network
+
+- name: Restart collectd
+  service: name=collectd state=restarted

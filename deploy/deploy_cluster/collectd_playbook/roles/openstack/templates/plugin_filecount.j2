@@ -1,0 +1,13 @@
+LoadPlugin filecount
+
+<Plugin filecount>
+{% for match in logs %}
+    <Directory "/var/log/{{ match }}">
+        Instance "{{ match }}-directory"
+    </Directory>
+{% endfor %}
+    <Directory "/var/log">
+        Instance "single-files"
+        Name "*-all.log*"
+    </Directory>
+</Plugin>

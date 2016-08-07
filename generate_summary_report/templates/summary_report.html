@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>Scale lab tests results</title>
+    <style>
+        table {border-collapse: collapse; color:#000000}
+        th, td {border: 1px solid #736F6E}
+    {% for executor in tests %}
+        #{{ executor }}_table_filter {clear:left; float:left; font-weight: bold;}
+	    #{{ executor }}_table_length {font-weight: bold;}
+    {% endfor %}
+    </style>
+
+    <!-- Required for tables -->
+    <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.4/css/jquery.dataTables.css">
+
+    <!-- Setting tables -->
+    <script type="text/javascript">
+        $(document).ready( function () {
+        {% for executor in tests %}
+            $('#{{ executor }}_table').DataTable({
+                "order": [ 0, 'desc' ],
+                "searching": true,
+                "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ){
+                    if (nRow.className.indexOf("success") != -1 ) {
+                        $('td', nRow).css('background-color', '#98FB98');
+                    } else if (nRow.className.indexOf("failed") != -1 ){
+                        $('td', nRow).css('background-color', '#F08080');
+                    }
+                }
+            });
+        {% endfor %}
+	    });
+    </script>
+</head>
+<body>
+    <h1>Scale lab tests results</h1>
+    <ul>
+    {% for executor in tests %}
+        <li><a href="#{{ executor }}_results">{{ executor.title() }} results</a></li>
+    {% endfor %}
+    </ul>
+
+{% for executor in tests %}
+    <h2 id="{{ executor }}_results">{{ executor.title() }} results</h2> (old results below)
+    {% include executors_results_template[executor] %}
+{% endfor %}
+</body>
+</html>

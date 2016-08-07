@@ -1,0 +1,3 @@
+# takes too much time for light Rally run
+keystone/token-create-and-use-for-auth.yaml
+mox/boot_server_with_network_in_single_tenant.yaml
