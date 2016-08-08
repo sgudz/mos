@@ -11,6 +11,7 @@ create_new_run = dict(parser.items('testrail'))['create_new_run']
 suite_id = dict(parser.items('testrail'))['suite_id']
 cluster_id = dict(parser.items('fuel'))['cluster_id']
 between_nodes = dict(parser.items('testrail'))['between_nodes']
+between_nodes = True if between_nodes == "true" else False
 version = str(dict(parser.items('fuel'))['version'])
 print "create new run: {}".format(create_new_run)
 if create_new_run == "true":
