@@ -145,4 +145,6 @@ echo "[test_json]" >> env.conf
 echo "json_data =" $JSON_DATA >> env.conf
 
 python addresult.py
+
+rm env.conf VMs.yaml nodes.yaml addresult.py run_shaker.sh
 echo "Done."
