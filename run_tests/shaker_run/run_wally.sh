@@ -3,7 +3,7 @@ export SSH_OPTS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o 
 COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 REMOTE_SCRIPT=`ssh $COMPUTE_IP "mktemp"`
 ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
-#set -x
+set -x
 printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
 apt-get update
 apt-get -y install git python-pip python-dev libxft-dev libblas-dev liblapack-dev libatlas-base-dev gfortran python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libblas3gf liblapack3gf libgfortran3 gfortran-4.6 gfortran libatlas3gf-base libfreetype6 libpng12-dev pkg-config swift libxml2-dev libxslt1-dev zlib1g-dev
