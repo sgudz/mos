@@ -81,7 +81,7 @@ a = read_16mib_median
 b = base_read_16mib_median
 status = 1
 if (float(read_16mib_median) < float(base_read_16mib_median) - float(base_read_16mib_median) * 0.1) or (float(read_16mib_stdev) < (float(base_read_16mib_stdev) - float(base_read_16mib_stdev) * 0.1)):
-    status = 0
+    status = 5
 list_t = get_tests_ids()
 print list_t.keys()
 for item in list_t.keys():
