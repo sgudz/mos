@@ -68,6 +68,10 @@ def get_tests_ids():
     return test_names
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
+run_id = dict(parser.items('testrail'))['run_id']
+fuel_ip = dict(parser.items('fuel'))['fuel_ip']
+cluster_id = dict(parser.items('fuel'))['cluster_id']
+version = str(dict(parser.items('fuel'))['version'])
 read_16mib_median = dict(parser.items('testrail'))['read_16mib_median']
 read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
