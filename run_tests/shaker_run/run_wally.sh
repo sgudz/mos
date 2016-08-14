@@ -1,4 +1,20 @@
 #!/bin/bash
+export SSH_OPTS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet'
+COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
+REMOTE_SCRIPT=`ssh $COMPUTE_IP "mktemp"`
+ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
+#set -x
+printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
+apt-get update
+apt-get -y install git python-pip python-dev libxft-dev libblas-dev liblapack-dev libatlas-base-dev gfortran python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libblas3gf liblapack3gf libgfortran3 gfortran-4.6 gfortran libatlas3gf-base libfreetype6 libpng12-dev pkg-config swift libxml2-dev libxslt1-dev zlib1g-dev
+pip install --upgrade pip
+pip install paramiko pbr vcversioner pyOpenSSL texttable sshtunnel lxml pandas
+git clone https://github.com/Mirantis/disk_perf_test_tool.git
+cd disk_perf_test_tool/
+pip install -r requirements.txt
+EOF
+
+ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
 READ_16MIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
 READ_16MIB_STDEV=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 4)')
