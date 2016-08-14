@@ -91,7 +91,7 @@ for item in list_t.keys():
         print list_t[item]
         print item
         client.send_post('add_result/{}'.format(list_t[item]),
-                         {'status_id': int(status), 'comment': str(comment) 'version': str(version), 'custom_throughput': int(read_16mib_median),
+                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_16mib_median),
                           'custom_stdev': int(read_16mib_stdev),
                           'custom_baseline_throughput': int(base_read_16mib_median),
                           'custom_baseline_stdev': int(base_read_16mib_stdev)})
