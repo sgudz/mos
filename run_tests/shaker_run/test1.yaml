@@ -21,4 +21,4 @@ tests:
                 cfg: ceph
                 params:
                     FILENAME: /dev/vdb
-                    TEST_FILE_SIZE: 1G
+                    TEST_FILE_SIZE: 100G
