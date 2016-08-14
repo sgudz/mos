@@ -1,0 +1,29 @@
+include: default.yaml
+lab_name: env-18
+
+clouds:
+  В fuel:
+В  В  В  В url: http://172.16.44.18:8000/
+
+В  В  В  В creds: admin:admin@admin #admin:admin@admin
+
+В  В  В  В ssh_creds: root:r00tme
+
+В  В  В  В openstack_env: Build-9.0-mos-495
+
+discover: fuel_openrc_only
+
+tests:
+В  В - start_test_nodes:
+В  В  В  В openstack:
+В  В  В  В  В  В count: x1
+В  В  В  В  В  В cfg_name: wally_1024
+В  В  В  В  В  В network_zone_name: admin_internal_net
+В  В  В  В  В  В flt_ip_pool: admin_floating_net
+
+В  В  В  В tests:
+В  В  В  В  В  В - io:
+В  В  В  В  В  В  В  В cfg: ceph
+В  В  В  В  В  В  В  В params:
+В  В  В  В  В  В  В  В  В  В FILENAME: /dev/vdb
+В  В  В  В  В  В  В  В  В  В TEST_FILE_SIZE: 100G
