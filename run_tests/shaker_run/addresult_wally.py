@@ -67,6 +67,10 @@ def get_tests_ids():
         test_names[item['title']] = item['id']
     return test_names
 
+read_16mib_median = dict(parser.items('testrail'))['read_16mib_median']
+read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
+base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
+base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_median']
 
 list_t = get_tests_ids()
 print list_t.keys()
