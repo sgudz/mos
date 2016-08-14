@@ -75,12 +75,12 @@ version = str(dict(parser.items('fuel'))['version'])
 read_16mib_median = dict(parser.items('testrail'))['read_16mib_median']
 read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
-base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_median']
+base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_stdev']
 
 list_t = get_tests_ids()
 print list_t.keys()
 for item in list_t.keys():
-    if "16MiB" in item and "Read" in item and not "[deprecated]" in item:
+    if "4 KiB" in item and "Read" in item and not "[deprecated]" in item:
         print list_t[item]
         print item
         client.send_post('add_result/{}'.format(list_t[item]),
