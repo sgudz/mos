@@ -12,6 +12,7 @@ pip install paramiko pbr vcversioner pyOpenSSL texttable sshtunnel lxml pandas
 git clone https://github.com/Mirantis/disk_perf_test_tool.git
 cd disk_perf_test_tool/
 pip install -r requirements.txt
+python -m wally test "test2" test1.yaml
 EOF
 
 ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
