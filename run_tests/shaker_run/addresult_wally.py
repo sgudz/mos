@@ -77,6 +77,9 @@ read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
 base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_stdev']
 
+status = 1
+if (read_16mib_median < base_read_16mib_median * 0.1) or (read_16mib_stdev < base_read_16mib_stdev * 0.1):
+    status = 0
 list_t = get_tests_ids()
 print list_t.keys()
 for item in list_t.keys():
@@ -84,7 +87,7 @@ for item in list_t.keys():
         print list_t[item]
         print item
         client.send_post('add_result/{}'.format(list_t[item]),
-                         {'status_id': 1, 'version': str(version), 'custom_throughput': int(read_16mib_median),
+                         {'status_id': int(status), 'version': str(version), 'custom_throughput': int(read_16mib_median),
                           'custom_stdev': int(read_16mib_stdev),
                           'custom_baseline_throughput': int(base_read_16mib_median),
                           'custom_baseline_stdev': int(base_read_16mib_stdev)})
