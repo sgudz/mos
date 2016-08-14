@@ -66,7 +66,8 @@ def get_tests_ids():
         tests_ids.append(item['id'])
         test_names[item['title']] = item['id']
     return test_names
-
+parser = ConfigParser.SafeConfigParser()
+parser.read('/root/env.conf')
 read_16mib_median = dict(parser.items('testrail'))['read_16mib_median']
 read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
