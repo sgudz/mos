@@ -3,7 +3,6 @@ import base64
 import json
 import urllib2
 
-
 # Testrail API
 class APIClient:
     def __init__(self, base_url):
