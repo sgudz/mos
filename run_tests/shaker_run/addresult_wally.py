@@ -82,6 +82,8 @@ read_4kib_stdev = dict(parser.items('testrail'))['read_4kib_stdev']
 write_4kib_median = dict(parser.items('testrail'))['write_4kib_median']
 write_4kib_stdev = dict(parser.items('testrail'))['write_4kib_stdev']
 latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
+if not latency_10_ms:
+    latency_10_ms = 0
 latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
 latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
