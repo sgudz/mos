@@ -48,10 +48,8 @@ class APIClient:
 
         return result
 
-
 class APIError(Exception):
     pass
-
 
 client = APIClient('https://mirantis.testrail.com/')
 client.user = 'sgudz@mirantis.com'
