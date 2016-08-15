@@ -104,12 +104,28 @@ base_latency_10_ms = dict(parser.items('testrail'))['base_latency_10_ms']
 base_latency_30_ms = dict(parser.items('testrail'))['base_latency_30_ms']
 base_latency_100_ms = dict(parser.items('testrail'))['base_latency_100_ms']
 
-status = 1
-comment = "passed"
+read_16mib_status = 1
+read_4kib_status = 1
+write_16mib_status = 1
+write_4kib_status = 1
+latency_10_ms_status = 1
+latency_30_ms_status = 1
+latency_100_ms_status = 1
 
 if (float(read_16mib_median) < float(base_read_16mib_median) - float(base_read_16mib_median) * 0.1) or (float(read_16mib_stdev) < (float(base_read_16mib_stdev) - float(base_read_16mib_stdev) * 0.1)):
-    status = 5
-    comment = "Value less then Baseline value more then 10 %"
+    read_16mib_status = 5
+if (float(read_4kib_median) < float(base_read_4kib_median) - float(base_read_4kib_median) * 0.1) or (float(read_4kib_stdev) < (float(base_read_4kib_stdev) - float(base_read_4kib_stdev) * 0.1)):
+    read_4kib_status = 5
+if (float(write_16mib_median) < float(write_16mib_median) - float(base_write_16mib_median) * 0.1) or (float(write_16mib_stdev) < (float(base_write_16mib_stdev) - float(base_write_16mib_stdev) * 0.1)):
+    write_16mib_status = 5
+if (float(write_4kib_median) < float(base_write_4kib_median) - float(base_write_4kib_median) * 0.1) or (float(write_4kib_stdev) < (float(base_write_4kib_stdev) - float(base_write_4kib_stdev) * 0.1)):
+    write_4kib_status = 5
+if float(latency_10_ms) < (float(base_latency_10_ms) - float(base_latency_10_ms) * 0.1):
+    latency_10_ms_status = 5
+if float(latency_30_ms) < (float(base_latency_30_ms) - float(base_latency_30_ms) * 0.1):
+    latency_30_ms_status = 5
+if float(latency_100_ms) < (float(base_latency_100_ms) - float(base_latency_100_ms) * 0.1):
+    latency_100_ms_status = 5
 list_t = get_tests_ids()
 for item in list_t.keys():
         if "4 KiB blocks; Read" in item:
@@ -127,31 +143,31 @@ for item in list_t.keys():
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
 client.send_post('add_result/{}'.format(test_4kib_read),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_4kib_median),
+                         {'status_id': int(read_4kib_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_4kib_median),
                           'custom_stdev': int(read_4kib_stdev),
                           'custom_baseline_throughput': int(base_read_4kib_median),
                           'custom_baseline_stdev': int(base_read_4kib_stdev)})
 client.send_post('add_result/{}'.format(test_4kib_write),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(write_4kib_median),
+                         {'status_id': int(write_4kib_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(write_4kib_median),
                           'custom_stdev': int(write_4kib_stdev),
                           'custom_baseline_throughput': int(base_write_4kib_median),
                           'custom_baseline_stdev': int(base_write_4kib_stdev)})
 client.send_post('add_result/{}'.format(test_16mib_read),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_16mib_median),
+                         {'status_id': int(read_16mib_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_16mib_median),
                           'custom_stdev': int(read_16mib_stdev),
                           'custom_baseline_throughput': int(base_read_16mib_median),
                           'custom_baseline_stdev': int(base_read_16mib_stdev)})
 client.send_post('add_result/{}'.format(test_16mib_write),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(write_16mib_median),
+                         {'status_id': int(write_16mib_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(write_16mib_median),
                           'custom_stdev': int(write_16mib_stdev),
                           'custom_baseline_throughput': int(base_write_16mib_median),
                           'custom_baseline_stdev': int(base_write_16mib_stdev)})
 client.send_post('add_result/{}'.format(test_latency_10_ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_10_ms),
+                         {'status_id': int(latency_10_ms_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_10_ms),
                           'custom_baseline_throughput': int(base_latency_10_ms)})
 client.send_post('add_result/{}'.format(test_latency_30_ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_30_ms),
+                         {'status_id': int(latency_30_ms_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_30_ms),
                           'custom_baseline_throughput': int(base_latency_30_ms)})
 client.send_post('add_result/{}'.format(test_latency_100_ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_100_ms),
+                         {'status_id': int(latency_100_ms_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_100_ms),
                           'custom_baseline_throughput': int(base_latency_100_ms)})
