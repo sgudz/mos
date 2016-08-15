@@ -16,8 +16,8 @@ python -m wally test "test2" test1.yaml > file.tmp
 EOF
 ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
-REP_DIR=`ssh ${SSH_OPTS} $COMPUTE_IP cat disk_perf_test_tool/file.tmp | grep -E "All info would be stored into /var/" | grep -Po "/var/.*"`
-scp ${SSH_OPTS} $COMPUTE_IP:$REP_DIR/ceph_report.html /root/
+#REP_DIR=`ssh ${SSH_OPTS} $COMPUTE_IP cat disk_perf_test_tool/file.tmp | grep -E "All info would be stored into /var/" | grep -Po "/var/.*"`
+scp ${SSH_OPTS} $COMPUTE_IP:/var/wally_results/*/ceph_report.html /root/
 
 READ_16MIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
 READ_16MIB_STDEV=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 4)')
