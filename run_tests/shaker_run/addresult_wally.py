@@ -81,9 +81,9 @@ read_4kib_median = dict(parser.items('testrail'))['read_4kib_median']
 read_4kib_stdev = dict(parser.items('testrail'))['read_4kib_stdev']
 write_4kib_median = dict(parser.items('testrail'))['write_4kib_median']
 write_4kib_stdev = dict(parser.items('testrail'))['write_4kib_stdev']
-latency_10iops = dict(parser.items('testrail'))['latency_10iops']
-latency_30iops = dict(parser.items('testrail'))['latency_30iops']
-latency_100iops = dict(parser.items('testrail'))['latency_100iops']
+latency_10_ms = dict(parser.items('testrail'))['latency_10iops']
+latency_30_ms = dict(parser.items('testrail'))['latency_30iops']
+latency_100_ms = dict(parser.items('testrail'))['latency_100iops']
 base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
 base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_stdev']
 base_write_16mib_median = dict(parser.items('testrail'))['base_write_16mib_median']
@@ -92,9 +92,9 @@ base_read_4kib_median = dict(parser.items('testrail'))['base_read_4kib_median']
 base_read_4kib_stdev = dict(parser.items('testrail'))['base_read_4kib_stdev']
 base_write_4kib_median = dict(parser.items('testrail'))['base_write_4kib_median']
 base_write_4kib_stdev = dict(parser.items('testrail'))['base_write_4kib_stdev']
-base_latency_10iops = dict(parser.items('testrail'))['base_latency_10iops']
-base_latency_30iops = dict(parser.items('testrail'))['base_latency_30iops']
-base_latency_100iops = dict(parser.items('testrail'))['base_latency_100iops']
+base_latency_10_ms = dict(parser.items('testrail'))['base_latency_10iops']
+base_latency_30_ms = dict(parser.items('testrail'))['base_latency_30iops']
+base_latency_100_ms = dict(parser.items('testrail'))['base_latency_100iops']
 
 status = 1
 comment = "passed"
@@ -113,11 +113,11 @@ for item in list_t.keys():
         elif "16MiB blocks; Write" in item:
                 test_16mib_write = list_t[item]
         elif "latency 10ms" in item:
-                test_latency_10ms = list_t[item]
+                test_latency_10_ms = list_t[item]
         elif "latency 30ms" in item:
-                test_latency_30ms = list_t[item]
+                test_latency_30_ms = list_t[item]
         elif "latency 100ms" in item:
-                test_latency_100ms = list_t[item]
+                test_latency_100_ms = list_t[item]
 client.send_post('add_result/{}'.format(test_4kib_read),
                          {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_4kib_median),
                           'custom_stdev': int(read_4kib_stdev),
@@ -138,12 +138,12 @@ client.send_post('add_result/{}'.format(test_16mib_write),
                           'custom_stdev': int(write_16mib_stdev),
                           'custom_baseline_throughput': int(base_write_16mib_median),
                           'custom_baseline_stdev': int(base_write_16mib_stdev)})
-client.send_post('add_result/{}'.format(test_latency_10ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_10iops),
-                          'custom_baseline_throughput': int(base_latency_10iops)})
-client.send_post('add_result/{}'.format(test_latency_30ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_30iops),
-                          'custom_baseline_throughput': int(base_latency_30iops)})
-client.send_post('add_result/{}'.format(test_latency_100ms),
-                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_100iops),
-                          'custom_baseline_throughput': int(base_latency_100iops)})
+client.send_post('add_result/{}'.format(test_latency_10_ms),
+                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_10_ms),
+                          'custom_baseline_throughput': int(base_latency_10_ms)})
+client.send_post('add_result/{}'.format(test_latency_30_ms),
+                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_30_ms),
+                          'custom_baseline_throughput': int(base_latency_30_ms)})
+client.send_post('add_result/{}'.format(test_latency_100_ms),
+                         {'status_id': int(status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(latency_100_ms),
+                          'custom_baseline_throughput': int(base_latency_100_ms)})
