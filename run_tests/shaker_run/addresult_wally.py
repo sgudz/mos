@@ -143,7 +143,7 @@ for item in list_t.keys():
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
 client.send_post('add_result/{}'.format(test_4kib_read),
-                         {'status_id': int(read_4kib_status), 'comment': str(comment), 'version': str(version), 'custom_throughput': int(read_4kib_median),
+                         {'status_id': int(read_4kib_status), 'version': str(version), 'custom_throughput': int(read_4kib_median),
                           'custom_stdev': int(read_4kib_stdev),
                           'custom_baseline_throughput': int(base_read_4kib_median),
                           'custom_baseline_stdev': int(base_read_4kib_stdev)})
