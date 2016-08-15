@@ -15,7 +15,7 @@ pip install -r requirements.txt
 python -m wally test "test2" test1.yaml
 EOF
 
-#ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
+ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
 READ_16MIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
 READ_16MIB_STDEV=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 4)')
