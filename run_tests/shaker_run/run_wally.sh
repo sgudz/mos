@@ -39,8 +39,8 @@ echo "write_16mib_median =" $WRITE_16MIB_MEDIAN >> env.conf
 echo "write_16mib_stdev =" $WRITE_16MIB_STDEV >> env.conf
 echo "write_4kib_median =" $WRITE_4KIB_MEDIAN >> env.conf
 echo "write_4kib_stdev =" $WRITE_4KIB_STDEV >> env.conf
-echo "latency_10iops =" $LATENCY_10_IOPS >> env.conf
-echo "latency_30iops =" $LATENCY_30_IOPS >> env.conf
-echo "latency_100iops =" $LATENCY_100_IOPS >> env.conf
+echo "latency_10_ms =" $LATENCY_10_IOPS >> env.conf
+echo "latency_30_ms =" $LATENCY_30_IOPS >> env.conf
+echo "latency_100_ms =" $LATENCY_100_IOPS >> env.conf
 
 python addresult_wally.py
