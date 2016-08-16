@@ -13,7 +13,7 @@ git clone https://github.com/Mirantis/disk_perf_test_tool.git
 cd disk_perf_test_tool/
 pip install -r requirements.txt
 curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/test1.yaml > test1.yaml
-https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/default.yaml > default.yaml
+curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/default.yaml > default.yaml
 python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
 EOF
 ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
