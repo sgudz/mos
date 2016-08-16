@@ -3,7 +3,7 @@ lab_name: Env-19 (Perf-3)
 
 clouds:
     fuel:
-        url: http://172.18.44.19:8000/
+        url: http://172.16.44.19:8000/
 
         # fuel UI creds
         creds: admin:admin@admin #admin:admin@admin
