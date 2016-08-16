@@ -1,5 +1,5 @@
 include: default.yaml
-lab_name: env-18
+lab_name: env-19
 clouds:
     openstack:
         OS_TENANT_NAME: admin
