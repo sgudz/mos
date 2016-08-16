@@ -1,0 +1,32 @@
+include: default.yaml
+lab_name: Env-19 (Perf-3)
+
+clouds:
+    fuel:
+        url: http://172.18.44.19:8000/
+
+        # fuel UI creds
+        creds: admin:admin@admin #admin:admin@admin
+
+        # fuel master ssh passwd
+        ssh_creds: root:r00tme
+
+        # openstack environment
+        openstack_env: Build-9.0-mos-495
+
+discover: fuel_openrc_only
+
+tests:
+    - start_test_nodes:
+        openstack:
+            count: x1
+            cfg_name: wally_1024
+            network_zone_name: admin_internal_net
+            flt_ip_pool: admin_floating_net
+
+        tests:
+            - io:
+                cfg: ceph
+                params:
+                    FILENAME: /dev/vdb
+                    TEST_FILE_SIZE: 100G
