@@ -112,19 +112,19 @@ latency_10_ms_status = 1
 latency_30_ms_status = 1
 latency_100_ms_status = 1
 
-if read_16mib_median < (base_read_16mib_median - float(round(base_read_16mib_median * 0.1))):
+if read_16mib_median < (base_read_16mib_median - float(base_read_16mib_median) * 0.1):
     read_16mib_status = 5
-if read_4kib_median < (base_read_4kib_median - float(round(base_read_4kib_median * 0.1))):
+if read_4kib_median < (base_read_4kib_median - float(base_read_4kib_median) * 0.1):
     read_4kib_status = 5
-if write_16mib_median < (base_write_16mib_median - float(round(base_write_16mib_median * 0.1))):
+if write_16mib_median < (base_write_16mib_median - float(base_write_16mib_median) * 0.1):
     write_16mib_status = 5
-if write_4kib_median < (base_write_4kib_median - float(round(base_write_4kib_median * 0.1))):
+if write_4kib_median < (base_write_4kib_median - float(base_write_4kib_median) * 0.1):
     write_4kib_status = 5
-if latency_10_ms < (base_latency_10_ms - float(round(base_latency_10_ms * 0.1))):
+if latency_10_ms < (base_latency_10_ms - float(base_latency_10_ms) * 0.1):
     latency_10_ms_status = 5
-if latency_30_ms < (base_latency_30_ms - float(round(base_latency_30_ms * 0.1))):
+if latency_30_ms < (base_latency_30_ms - float(base_latency_30_ms) * 0.1):
     latency_30_ms_status = 5
-if latency_100_ms < (base_latency_100_ms - float(round(base_latency_100_ms * 0.1))):
+if latency_100_ms < (base_latency_100_ms - float(base_latency_100_ms) * 0.1):
     latency_100_ms_status = 5
 list_t = get_tests_ids()
 for item in list_t.keys():
