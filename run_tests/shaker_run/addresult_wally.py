@@ -91,6 +91,7 @@ if not latency_30_ms:
     latency_30_ms = 0
 latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 
+### Baseline data
 base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
 base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
 base_write_16mib_median = int(dict(parser.items('testrail'))['base_write_16mib_median'])
@@ -111,6 +112,7 @@ latency_10_ms_status = 1
 latency_30_ms_status = 1
 latency_100_ms_status = 1
 
+### Define status for tests, based on Baseline - 10%
 if read_16mib_median < (base_read_16mib_median - (base_read_16mib_median // 10)):
     read_16mib_status = 5
 if read_4kib_median < (base_read_4kib_median - (base_read_4kib_median // 10)):
@@ -126,9 +128,8 @@ if latency_30_ms < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 10)):
 if latency_100_ms < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
 
-list_t = get_tests_ids()
-
 ### Define test id's for each case
+list_t = get_tests_ids()
 for item in list_t.keys():
         if "4 KiB blocks; Read" in item:
                 test_4kib_read = list_t[item]
