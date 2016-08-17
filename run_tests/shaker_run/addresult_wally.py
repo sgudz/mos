@@ -82,13 +82,13 @@ read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
 write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
 write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
 
-latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
+latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
 if not latency_10_ms:
     latency_10_ms = 0
-latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
+latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
 if not latency_30_ms:
     latency_30_ms = 0
-latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
+latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 if not latency_100_ms:
     latency_100_ms = 0
 
@@ -112,7 +112,7 @@ latency_10_ms_status = 1
 latency_30_ms_status = 1
 latency_100_ms_status = 1
 
-if float(read_16mib_median) < (float(base_read_16mib_median) - float(base_read_16mib_median) * 0.1):
+if read_16mib_median) < (base_read_16mib_median - (base_read_16mib_median // 10)):
     read_16mib_status = 5
 if float(read_4kib_median) < (float(base_read_4kib_median) - float(base_read_4kib_median) * 0.1):
     read_4kib_status = 5
