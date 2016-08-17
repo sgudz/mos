@@ -89,8 +89,6 @@ latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
 if not latency_30_ms:
     latency_30_ms = 0
 latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
-if not latency_100_ms:
-    latency_100_ms = 0
 
 base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
 base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
