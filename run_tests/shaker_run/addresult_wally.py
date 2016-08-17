@@ -126,6 +126,8 @@ if latency_30_ms < (float(base_latency_30_ms) - float(base_latency_30_ms) * 0.1)
     latency_30_ms_status = 5
 if latency_100_ms < (float(base_latency_100_ms) - float(base_latency_100_ms) * 0.1):
     latency_100_ms_status = 5
+
+print write_16mib_status
 list_t = get_tests_ids()
 for item in list_t.keys():
         if "4 KiB blocks; Read" in item:
