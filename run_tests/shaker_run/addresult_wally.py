@@ -67,6 +67,7 @@ def get_tests_ids():
         test_names[item['title']] = item['id']
     return test_names
 
+### Parsing env.conf file for required data
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
 run_id = dict(parser.items('testrail'))['run_id']
@@ -125,8 +126,9 @@ if latency_30_ms < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 10)):
 if latency_100_ms < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
 
-print write_16mib_status
 list_t = get_tests_ids()
+
+### Define test id's for each case
 for item in list_t.keys():
         if "4 KiB blocks; Read" in item:
                 test_4kib_read = list_t[item]
@@ -142,6 +144,8 @@ for item in list_t.keys():
                 test_latency_30_ms = list_t[item]
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
+                
+### Pushing results to TestRail
 client.send_post('add_result/{}'.format(test_4kib_read),
                          {'status_id': read_4kib_status, 'version': str(version), 'custom_throughput': read_4kib_median,
                           'custom_stdev': read_4kib_stdev,
