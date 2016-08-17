@@ -73,36 +73,36 @@ run_id = dict(parser.items('testrail'))['run_id']
 fuel_ip = dict(parser.items('fuel'))['fuel_ip']
 cluster_id = dict(parser.items('fuel'))['cluster_id']
 version = str(dict(parser.items('fuel'))['version'])
-read_16mib_median = dict(parser.items('testrail'))['read_16mib_median']
-read_16mib_stdev = dict(parser.items('testrail'))['read_16mib_stdev']
-write_16mib_median = dict(parser.items('testrail'))['write_16mib_median']
-write_16mib_stdev = dict(parser.items('testrail'))['write_16mib_stdev']
-read_4kib_median = dict(parser.items('testrail'))['read_4kib_median']
-read_4kib_stdev = dict(parser.items('testrail'))['read_4kib_stdev']
-write_4kib_median = dict(parser.items('testrail'))['write_4kib_median']
-write_4kib_stdev = dict(parser.items('testrail'))['write_4kib_stdev']
+read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
+read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
+write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
+write_16mib_stdev = int(dict(parser.items('testrail'))['write_16mib_stdev'])
+read_4kib_median = int(dict(parser.items('testrail'))['read_4kib_median'])
+read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
+write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
+write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
 
-latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
+latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
 if not latency_10_ms:
     latency_10_ms = 0
-latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
+latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
 if not latency_30_ms:
     latency_30_ms = 0
-latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
+latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
 if not latency_100_ms:
     latency_100_ms = 0
 
-base_read_16mib_median = dict(parser.items('testrail'))['base_read_16mib_median']
-base_read_16mib_stdev = dict(parser.items('testrail'))['base_read_16mib_stdev']
-base_write_16mib_median = dict(parser.items('testrail'))['base_write_16mib_median']
-base_write_16mib_stdev = dict(parser.items('testrail'))['base_write_16mib_stdev']
-base_read_4kib_median = dict(parser.items('testrail'))['base_read_4kib_median']
-base_read_4kib_stdev = dict(parser.items('testrail'))['base_read_4kib_stdev']
-base_write_4kib_median = dict(parser.items('testrail'))['base_write_4kib_median']
-base_write_4kib_stdev = dict(parser.items('testrail'))['base_write_4kib_stdev']
-base_latency_10_ms = dict(parser.items('testrail'))['base_latency_10_ms']
-base_latency_30_ms = dict(parser.items('testrail'))['base_latency_30_ms']
-base_latency_100_ms = dict(parser.items('testrail'))['base_latency_100_ms']
+base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
+base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
+base_write_16mib_median = int(dict(parser.items('testrail'))['base_write_16mib_median'])
+base_write_16mib_stdev = int(dict(parser.items('testrail'))['base_write_16mib_stdev'])
+base_read_4kib_median = int(dict(parser.items('testrail'))['base_read_4kib_median'])
+base_read_4kib_stdev = int(dict(parser.items('testrail'))['base_read_4kib_stdev'])
+base_write_4kib_median = int(dict(parser.items('testrail'))['base_write_4kib_median'])
+base_write_4kib_stdev = int(dict(parser.items('testrail'))['base_write_4kib_stdev'])
+base_latency_10_ms = int(dict(parser.items('testrail'))['base_latency_10_ms'])
+base_latency_30_ms = int(dict(parser.items('testrail'))['base_latency_30_ms'])
+base_latency_100_ms = int(dict(parser.items('testrail'))['base_latency_100_ms'])
 
 read_16mib_status = 1
 read_4kib_status = 1
@@ -116,7 +116,7 @@ if float(read_16mib_median) < (float(base_read_16mib_median) - float(base_read_1
     read_16mib_status = 5
 if float(read_4kib_median) < (float(base_read_4kib_median) - float(base_read_4kib_median) * 0.1):
     read_4kib_status = 5
-if int(write_16mib_median) < (int(base_write_16mib_median) - int(base_write_16mib_median) // 10):
+if write_16mib_median < (base_write_16mib_median - base_write_16mib_median // 10):
     write_16mib_status = 5
 if int(write_4kib_median) < (int(base_write_4kib_median) - int(base_write_4kib_median) * 0.1):
     write_4kib_status = 5
