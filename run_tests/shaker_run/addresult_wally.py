@@ -116,7 +116,7 @@ if float(read_16mib_median) < (float(base_read_16mib_median) - float(base_read_1
     read_16mib_status = 5
 if float(read_4kib_median) < (float(base_read_4kib_median) - float(base_read_4kib_median) * 0.1):
     read_4kib_status = 5
-if int(write_16mib_median) < (int(base_write_16mib_median) - int(base_write_16mib_median // 10)):
+if int(write_16mib_median) < (int(base_write_16mib_median) - int(base_write_16mib_median) // 10):
     write_16mib_status = 5
 if int(write_4kib_median) < (int(base_write_4kib_median) - int(base_write_4kib_median) * 0.1):
     write_4kib_status = 5
