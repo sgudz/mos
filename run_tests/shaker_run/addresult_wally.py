@@ -112,19 +112,19 @@ latency_10_ms_status = 1
 latency_30_ms_status = 1
 latency_100_ms_status = 1
 
-if read_16mib_median) < (base_read_16mib_median - (base_read_16mib_median // 10)):
+if read_16mib_median < (base_read_16mib_median - (base_read_16mib_median // 10)):
     read_16mib_status = 5
-if float(read_4kib_median) < (float(base_read_4kib_median) - float(base_read_4kib_median) * 0.1):
+if read_4kib_median < (base_read_4kib_median - (base_read_4kib_median // 10)):
     read_4kib_status = 5
-if write_16mib_median < (base_write_16mib_median - base_write_16mib_median // 10):
+if write_16mib_median < (base_write_16mib_median - (base_write_16mib_median // 10)):
     write_16mib_status = 5
-if int(write_4kib_median) < (int(base_write_4kib_median) - int(base_write_4kib_median) * 0.1):
+if write_4kib_median < (base_write_4kib_median - (base_write_4kib_median) // 10)):
     write_4kib_status = 5
-if float(latency_10_ms) < (float(base_latency_10_ms) - float(base_latency_10_ms) * 0.1):
+if latency_10_ms < (int(base_latency_10_ms) - (int(base_latency_10_ms) // 10)):
     latency_10_ms_status = 5
-if float(latency_30_ms) < (float(base_latency_30_ms) - float(base_latency_30_ms) * 0.1):
+if latency_30_ms < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 10)):
     latency_30_ms_status = 5
-if float(latency_100_ms) < (float(base_latency_100_ms) - float(base_latency_100_ms) * 0.1):
+if latency_100_ms < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
 
 print write_16mib_status
