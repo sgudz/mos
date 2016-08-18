@@ -9,7 +9,7 @@ ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 source /root/openrc
 wget "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
 glance image-create --name wally_ubuntu --disk-format qcow2 --container-format bare --visibility public --file "trusty-server-cloudimg-amd64-disk1.img"
-rm "trusty-server-cloudimg-amd64-disk1.img"
+rm /root/trusty-server-cloudimg-amd64-disk1.img
 EOF
 ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
