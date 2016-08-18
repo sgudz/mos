@@ -16,24 +16,24 @@ echo ${IMAGE}
 # rm /root/trusty-server-cloudimg-amd64-disk1.img
 # fi
 EOF
-ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
+ssh $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
 ### Install and launch wally
-REMOTE_SCRIPT=`ssh $COMPUTE_IP "mktemp"`
-ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
-set -x
-printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
-apt-get update
-apt-get -y install git python-pip python-dev libxft-dev libblas-dev liblapack-dev libatlas-base-dev gfortran python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libblas3gf liblapack3gf libgfortran3 gfortran-4.6 gfortran libatlas3gf-base libfreetype6 libpng12-dev pkg-config swift libxml2-dev libxslt1-dev zlib1g-dev
-pip install --upgrade pip
-pip install paramiko pbr vcversioner pyOpenSSL texttable sshtunnel lxml pandas
-git clone https://github.com/Mirantis/disk_perf_test_tool.git
-cd disk_perf_test_tool/
-pip install -r requirements.txt
-curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/test1.yaml > test1.yaml
-curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/default.yaml > default.yaml
-python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
-EOF
+# REMOTE_SCRIPT=`ssh $COMPUTE_IP "mktemp"`
+# ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
+# set -x
+# printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
+# apt-get update
+# apt-get -y install git python-pip python-dev libxft-dev libblas-dev liblapack-dev libatlas-base-dev gfortran python-numpy python-scipy python-matplotlib ipython ipython-notebook python-pandas python-sympy python-nose libblas3gf liblapack3gf libgfortran3 gfortran-4.6 gfortran libatlas3gf-base libfreetype6 libpng12-dev pkg-config swift libxml2-dev libxslt1-dev zlib1g-dev
+# pip install --upgrade pip
+# pip install paramiko pbr vcversioner pyOpenSSL texttable sshtunnel lxml pandas
+# git clone https://github.com/Mirantis/disk_perf_test_tool.git
+# cd disk_perf_test_tool/
+# pip install -r requirements.txt
+# curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/test1.yaml > test1.yaml
+# curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/default.yaml > default.yaml
+# python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
+# EOF
 #ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
 #REP_DIR=`ssh ${SSH_OPTS} $COMPUTE_IP cat disk_perf_test_tool/file.tmp | grep -E "All info would be stored into /var/" | grep -Po "/var/.*"`
