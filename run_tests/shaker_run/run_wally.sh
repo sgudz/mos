@@ -28,7 +28,7 @@ curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_
 curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/default.yaml > default.yaml
 python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
 EOF
-ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
+#ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
 #REP_DIR=`ssh ${SSH_OPTS} $COMPUTE_IP cat disk_perf_test_tool/file.tmp | grep -E "All info would be stored into /var/" | grep -Po "/var/.*"`
 scp ${SSH_OPTS} $COMPUTE_IP:/var/wally_results/*/ceph_report.html /root/
@@ -59,4 +59,4 @@ echo "latency_10_ms =" $LATENCY_10_IOPS >> env.conf
 echo "latency_30_ms =" $LATENCY_30_IOPS >> env.conf
 echo "latency_100_ms =" $LATENCY_100_IOPS >> env.conf
 
-python addresult_wally.py
+#python addresult_wally.py
