@@ -7,8 +7,8 @@ CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ /
 REMOTE_SCRIPT1=`ssh $CONTROLLER_IP "mktemp"`
 ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 wget "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
-    glance image-create --name wally_ubuntu --disk-format qcow2 --container-format bare --visibility public --file "trusty-server-cloudimg-amd64-disk1.img"
-    rm "trusty-server-cloudimg-amd64-disk1.img"
+glance image-create --name wally_ubuntu --disk-format qcow2 --container-format bare --visibility public --file "trusty-server-cloudimg-amd64-disk1.img"
+rm "trusty-server-cloudimg-amd64-disk1.img"
 EOF
 ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
