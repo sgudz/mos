@@ -9,7 +9,6 @@ ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 #!/bin/bash
 set -x
 source /root/openrc
-export OS_USERNAME=admin
 IMAGE=`glance image-list | grep wally_ubuntu | head -n 1`
 echo ${IMAGE}
 # if [ -z ${IMAGE} ];then
