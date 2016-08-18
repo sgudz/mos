@@ -8,7 +8,7 @@ REMOTE_SCRIPT1=`ssh $CONTROLLER_IP "mktemp"`
 ssh $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 set -x
 source /root/openrc
-IMAGE=\$(glance image-list | awk '/wally_ubuntu/ {print $4}')
+IMAGE=\$(glance image-list | awk '/wally_ubuntu/ {print \$4}')
 echo \${IMAGE}
 # if [ -z ${IMAGE} ];then
 # wget --quiet "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
