@@ -4,8 +4,8 @@ COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | 
 CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 
 ### Create image wally_ubuntu if it doesnt exist
-REMOTE_SCRIPT1=`ssh $CONTROLLER_IP "mktemp"`
-ssh $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
+REMOTE_SCRIPT1=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
+ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 set -x
 source /root/openrc
 IMAGE=\$(glance image-list | awk '/wally_ubuntu/ {print \$4}')
@@ -16,10 +16,10 @@ glance image-create --name wally_ubuntu --disk-format qcow2 --container-format b
 rm /root/trusty-server-cloudimg-amd64-disk1.img
 fi
 EOF
-ssh $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
+ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
 ### Install and launch wally
-REMOTE_SCRIPT=`ssh $COMPUTE_IP "mktemp"`
+REMOTE_SCRIPT=`ssh ${SSH_OPTS} $COMPUTE_IP "mktemp"`
 ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
 set -x
 printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
