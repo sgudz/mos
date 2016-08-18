@@ -10,7 +10,7 @@ set -x
 source /root/openrc
 IMAGE=$(glance image-list | awk '/wally_ubuntu/ {print $2}' | head -n 1)
 if [ -z $IMAGE ];then
-wget "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
+wget --quiet "https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img"
 glance image-create --name wally_ubuntu --disk-format qcow2 --container-format bare --visibility public --file "trusty-server-cloudimg-amd64-disk1.img"
 rm /root/trusty-server-cloudimg-amd64-disk1.img
 fi
