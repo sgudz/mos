@@ -5,8 +5,7 @@ CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ /
 
 ### Create image wally_ubuntu if it doesnt exist
 REMOTE_SCRIPT1=`ssh $CONTROLLER_IP "mktemp"`
-ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
-#!/bin/bash
+ssh $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
 set -x
 source /root/openrc
 IMAGE=`glance image-list | grep wally_ubuntu | head -n 1`
