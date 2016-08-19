@@ -64,4 +64,4 @@ echo "latency_10_ms =" $LATENCY_10_IOPS >> env.conf
 echo "latency_30_ms =" $LATENCY_30_IOPS >> env.conf
 echo "latency_100_ms =" $LATENCY_100_IOPS >> env.conf
 
-#python addresult_wally.py
+python addresult_wally.py
