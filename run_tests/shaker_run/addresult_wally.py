@@ -2,7 +2,7 @@ import ConfigParser
 import base64
 import json
 import urllib2
-from plugin.testrailplugin import testrailAPI
+import plugin.testrailplugin
 
 # # Testrail API
 # class APIClient:
