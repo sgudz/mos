@@ -2,7 +2,7 @@ import ConfigParser
 import base64
 import json
 import urllib2
-from run_tests.shaker_run.plugin import *
+from plugin import testrailplugin
 
 # # Testrail API
 # class APIClient:
