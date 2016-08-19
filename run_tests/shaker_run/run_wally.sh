@@ -19,8 +19,6 @@ EOF
 ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
 ### Install and launch wally
-# REMOTE_SCRIPT=`ssh ${SSH_OPTS} $COMPUTE_IP "mktemp"`
-# ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}"
 REMOTE_SCRIPT=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
 ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT}" <<EOF
 set -x
