@@ -19,8 +19,10 @@ EOF
 ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
 ### Install and launch wally
-REMOTE_SCRIPT=`ssh ${SSH_OPTS} $COMPUTE_IP "mktemp"`
-ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
+# REMOTE_SCRIPT=`ssh ${SSH_OPTS} $COMPUTE_IP "mktemp"`
+# ssh ${SSH_OPTS} $COMPUTE_IP "cat > ${REMOTE_SCRIPT}" <<EOF
+REMOTE_SCRIPT=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
+ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT}" <<EOF
 set -x
 printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
 apt-get update
@@ -35,9 +37,10 @@ curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_
 python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
 EOF
 #ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
+ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT}
 
-scp ${SSH_OPTS} $COMPUTE_IP:/var/wally_results/*/ceph_report.html /root/
-ssh ${SSH_OPTS} $COMPUTE_IP "rm -rf /var/wally_results/"
+scp ${SSH_OPTS} $CONTROLLER_IP:/var/wally_results/*/ceph_report.html /root/
+ssh ${SSH_OPTS} $CONTROLLER_IP "rm -rf /var/wally_results/"
 READ_16MIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
 READ_16MIB_STDEV=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 4)')
 READ_4KIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 2)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
