@@ -37,7 +37,7 @@ EOF
 ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 
 scp ${SSH_OPTS} $COMPUTE_IP:/var/wally_results/*/ceph_report.html /root/
-
+ssh ${SSH_OPTS} $COMPUTE_IP "rm -rf /var/wally_results/"
 READ_16MIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
 READ_16MIB_STDEV=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 5)' | grep -Eo "[0-9]*" | awk '(NR == 4)')
 READ_4KIB_MEDIAN=$(cat ceph_report.html | grep -A1 "Read" | awk '(NR == 2)' | grep -Eo "[0-9]*" | awk '(NR == 1)')
@@ -64,4 +64,4 @@ echo "latency_10_ms =" $LATENCY_10_IOPS >> env.conf
 echo "latency_30_ms =" $LATENCY_30_IOPS >> env.conf
 echo "latency_100_ms =" $LATENCY_100_IOPS >> env.conf
 
-python addresult_wally.py
+#python addresult_wally.py
