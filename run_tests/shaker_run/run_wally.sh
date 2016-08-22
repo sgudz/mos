@@ -3,7 +3,7 @@ export SSH_OPTS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o 
 COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 
-REPL=$(ssh $CONTROLLER_IP "ceph osd dump | awk '/replicated size 3/ {print $3}' | head -n 1")
+REPL=$(ssh $CONTROLLER_IP "ceph osd dump | awk '/replicated size 3/ {print \$3}' | head -n 1")
 echo $REPL
 
 ### Create image wally_ubuntu if it doesnt exist
