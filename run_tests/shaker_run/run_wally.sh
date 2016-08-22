@@ -4,7 +4,12 @@ COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | 
 CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 
 REPL=$(ssh $CONTROLLER_IP "ceph osd dump | awk '/replicated size 3/ {print \$3}' | head -n 1")
-echo $REPL
+if [ -z \${REPL} ];then
+FACTOR=2
+elif [ -n \${IMAGE} ];then
+FACTOR=3
+fi
+echo $FACTOR
 
 ### Create image wally_ubuntu if it doesnt exist
 REMOTE_SCRIPT1=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
