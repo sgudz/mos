@@ -2,7 +2,7 @@
 export SSH_OPTS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet'
 COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
-REPL=$(ssh $CONTROLLER_IP "ceph osd dump | grep -Eo "replicated size [23]" | head -n 1 | awk '{print \$3}'")
+REPL=$(ssh $CONTROLLER_IP "ceph osd dump | grep -Eo "replicated size [23]" | head -n 1 | awk '{print $3}'")
 echo $REPL
 ### Create image wally_ubuntu if it doesnt exist
 REMOTE_SCRIPT1=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
