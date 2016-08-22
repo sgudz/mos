@@ -126,7 +126,7 @@ if latency_30_ms < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 10)):
     latency_30_ms_status = 5
 if latency_100_ms < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
-
+print latency_30_ms_status
 ### Define test id's for each case
 list_t = get_tests_ids()
 for item in list_t.keys():
