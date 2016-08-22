@@ -167,11 +167,11 @@ client.send_post('add_result/{}'.format(test_16mib_write),
                           'custom_baseline_throughput': int(base_write_16mib_median),
                           'custom_baseline_stdev': int(base_write_16mib_stdev)})
 client.send_post('add_result/{}'.format(test_latency_10_ms),
-                         {'status_id': latency_10_ms_status, 'version': str(version), 'custom_throughput': int(latency_10_ms),
+                         {'status_id': int(latency_10_ms_status), 'version': str(version), 'custom_throughput': int(latency_10_ms),
                           'custom_baseline_throughput': int(base_latency_10_ms)})
 client.send_post('add_result/{}'.format(test_latency_30_ms),
-                         {'status_id': latency_30_ms_status, 'version': str(version), 'custom_throughput': int(latency_30_ms),
+                         {'status_id': int(latency_30_ms_status), 'version': str(version), 'custom_throughput': int(latency_30_ms),
                           'custom_baseline_throughput': int(base_latency_30_ms)})
 client.send_post('add_result/{}'.format(test_latency_100_ms),
-                         {'status_id': latency_100_ms_status, 'version': str(version), 'custom_throughput': int(latency_100_ms),
+                         {'status_id': int(latency_100_ms_status), 'version': str(version), 'custom_throughput': int(latency_100_ms),
                           'custom_baseline_throughput': int(base_latency_100_ms)})
