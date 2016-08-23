@@ -57,15 +57,6 @@ client = APIClient('https://mirantis.testrail.com/')
 client.user = 'sgudz@mirantis.com'
 client.password = 'qwertY123'
 
-def get_tests_ids():
-    tests = client.send_get('get_tests/{}'.format(run_id))
-    tests_ids = []
-    test_names = {}
-    for item in tests:
-        tests_ids.append(item['id'])
-        test_names[item['title']] = item['id']
-    return test_names
-
 ### Parsing env.conf file for required data
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
@@ -73,6 +64,9 @@ run_id = dict(parser.items('testrail'))['run_id']
 fuel_ip = dict(parser.items('fuel'))['fuel_ip']
 cluster_id = dict(parser.items('fuel'))['cluster_id']
 version = str(dict(parser.items('fuel'))['version'])
+
+repl = int(dict(parser.items('testrail'))['repl'])
+
 read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
 read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
 write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
@@ -126,6 +120,14 @@ if int(latency_30_ms) < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 1
     latency_30_ms_status = 5
 if int(latency_100_ms) < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
+
+def get_tests_ids():
+    tests = client.send_get('get_tests/{}'.format(run_id))
+    test_names = {}
+    for item in tests:
+        if "Repl: {}".format(repl) in item['title'] and not "[deprecated]" in item['title']:
+            test_names[item['title']] = item['id']
+    return test_names
 
 ### Define test id's for each case
 list_t = get_tests_ids()
