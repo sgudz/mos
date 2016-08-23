@@ -2,8 +2,8 @@
 export SSH_OPTS='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet'
 COMPUTE_IP=`fuel node | grep compute | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
 CONTROLLER_IP=`fuel node | grep controller | awk -F "|" '{print $5}' | sed 's/ //g' | head -n 1`
-# REPL=$(ssh $CONTROLLER_IP "ceph osd dump | grep -Eo "replicated size [23]" | head -n 1 | awk '{print $3}'")
-# echo $REPL
+REPL=$(ssh $CONTROLLER_IP "ceph osd dump | grep 'replicated size [23]' | head -n 1 | awk '{print \$6}'")
+echo $REPL
 ### Create image wally_ubuntu if it doesnt exist
 REMOTE_SCRIPT1=`ssh ${SSH_OPTS} $CONTROLLER_IP "mktemp"`
 ssh ${SSH_OPTS} $CONTROLLER_IP "cat > ${REMOTE_SCRIPT1}" <<EOF
@@ -57,7 +57,7 @@ WRITE_4KIB_STDEV=$(cat ceph_report.html | grep -A1 "Write" | awk '(NR == 2)' | g
 LATENCY_10_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>10" | awk '(NR == 2)' | grep -Eo "[0-9]*")
 LATENCY_30_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>30" | awk '(NR == 2)' | grep -Eo "[0-9]*")
 LATENCY_100_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>100" | awk '(NR == 2)' | grep -Eo "[0-9]*")
-
+echo "repl =" $REPL >> env.conf
 echo "read_16mib_median =" $READ_16MIB_MEDIAN >> env.conf
 echo "read_16mib_stdev =" $READ_16MIB_STDEV >> env.conf
 echo "read_4kib_median =" $READ_4KIB_MEDIAN >> env.conf
