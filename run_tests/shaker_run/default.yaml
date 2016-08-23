@@ -18,8 +18,8 @@ vm_configs:
         flavor:
             name: wally_1024
             hdd_size: 100
-            ram_size: 2048
-            cpu_count: 4
+            ram_size: 1024
+            cpu_count: 2
 
         vol_sz: 100
         name_templ: wally-{group}-{id}
