@@ -18,7 +18,7 @@ glance image-create --name wally_ubuntu --disk-format qcow2 --container-format b
 rm /root/trusty-server-cloudimg-amd64-disk1.img
 fi
 EOF
-#     ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
+ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT1}"
 
 ### Install and launch wally
 # REMOTE_SCRIPT=`ssh ${SSH_OPTS} $COMPUTE_IP "mktemp"`
