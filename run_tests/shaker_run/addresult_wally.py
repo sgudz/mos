@@ -121,6 +121,8 @@ if int(latency_30_ms) < (int(base_latency_30_ms) - (int(base_latency_30_ms) // 1
 if int(latency_100_ms) < (int(base_latency_100_ms) - (int(base_latency_100_ms) // 10)):
     latency_100_ms_status = 5
 
+repl = 2
+
 def get_tests_ids():
     tests = client.send_get('get_tests/{}'.format(run_id))
     test_names = {}
