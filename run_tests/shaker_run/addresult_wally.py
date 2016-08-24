@@ -148,7 +148,7 @@ for item in list_t.keys():
                 test_latency_100_ms = list_t[item]
                 
 for item in list_t.keys():
-    print item
+    print "Name of test: {}, Id: {}".format(item,list_t[item])
 ### Pushing results to TestRail
 client.send_post('add_result/{}'.format(test_4kib_read),
                          {'status_id': read_4kib_status, 'version': str(version), 'custom_throughput': read_4kib_median,
