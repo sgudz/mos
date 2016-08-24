@@ -128,7 +128,7 @@ def get_tests_ids():
         if "Repl: {}".format(repl) in item['title'] and not "[deprecated]" in item['title']:
             test_names[item['title']] = item['id']
     return test_names
-repl = 2
+
 ### Define test id's for each case
 list_t = get_tests_ids()
 for item in list_t.keys():
@@ -147,8 +147,8 @@ for item in list_t.keys():
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
                 
-print list_t
-print test_4kib_read                
+for item in list_t.keys():
+    print item
 ### Pushing results to TestRail
 client.send_post('add_result/{}'.format(test_4kib_read),
                          {'status_id': read_4kib_status, 'version': str(version), 'custom_throughput': read_4kib_median,
