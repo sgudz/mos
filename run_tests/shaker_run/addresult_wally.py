@@ -147,33 +147,35 @@ for item in list_t.keys():
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
                 
+print list_t
+print test_4kib_read                
 ### Pushing results to TestRail
-client.send_post('add_result/{}'.format(test_4kib_read),
-                         {'status_id': read_4kib_status, 'version': str(version), 'custom_throughput': read_4kib_median,
-                          'custom_stdev': read_4kib_stdev,
-                          'custom_baseline_throughput': base_read_4kib_median,
-                          'custom_baseline_stdev': base_read_4kib_stdev})
-client.send_post('add_result/{}'.format(test_4kib_write),
-                         {'status_id': write_4kib_status, 'version': str(version), 'custom_throughput': int(write_4kib_median),
-                          'custom_stdev': int(write_4kib_stdev),
-                          'custom_baseline_throughput': int(base_write_4kib_median),
-                          'custom_baseline_stdev': int(base_write_4kib_stdev)})
-client.send_post('add_result/{}'.format(test_16mib_read),
-                         {'status_id': read_16mib_status, 'version': str(version), 'custom_throughput': int(read_16mib_median),
-                          'custom_stdev': int(read_16mib_stdev),
-                          'custom_baseline_throughput': int(base_read_16mib_median),
-                          'custom_baseline_stdev': int(base_read_16mib_stdev)})
-client.send_post('add_result/{}'.format(test_16mib_write),
-                         {'status_id': write_16mib_status, 'version': str(version), 'custom_throughput': int(write_16mib_median),
-                          'custom_stdev': int(write_16mib_stdev),
-                          'custom_baseline_throughput': int(base_write_16mib_median),
-                          'custom_baseline_stdev': int(base_write_16mib_stdev)})
-client.send_post('add_result/{}'.format(test_latency_10_ms),
-                         {'status_id': latency_10_ms_status, 'version': str(version), 'custom_throughput': int(latency_10_ms),
-                          'custom_baseline_throughput': base_latency_10_ms})
-client.send_post('add_result/{}'.format(test_latency_30_ms),
-                         {'status_id': latency_30_ms_status, 'version': str(version), 'custom_throughput': int(latency_30_ms),
-                          'custom_baseline_throughput': base_latency_30_ms})
-client.send_post('add_result/{}'.format(test_latency_100_ms),
-                         {'status_id': latency_100_ms_status, 'version': str(version), 'custom_throughput': int(latency_100_ms),
-                          'custom_baseline_throughput': base_latency_100_ms})
+# client.send_post('add_result/{}'.format(test_4kib_read),
+#                          {'status_id': read_4kib_status, 'version': str(version), 'custom_throughput': read_4kib_median,
+#                           'custom_stdev': read_4kib_stdev,
+#                           'custom_baseline_throughput': base_read_4kib_median,
+#                           'custom_baseline_stdev': base_read_4kib_stdev})
+# client.send_post('add_result/{}'.format(test_4kib_write),
+#                          {'status_id': write_4kib_status, 'version': str(version), 'custom_throughput': int(write_4kib_median),
+#                           'custom_stdev': int(write_4kib_stdev),
+#                           'custom_baseline_throughput': int(base_write_4kib_median),
+#                           'custom_baseline_stdev': int(base_write_4kib_stdev)})
+# client.send_post('add_result/{}'.format(test_16mib_read),
+#                          {'status_id': read_16mib_status, 'version': str(version), 'custom_throughput': int(read_16mib_median),
+#                           'custom_stdev': int(read_16mib_stdev),
+#                           'custom_baseline_throughput': int(base_read_16mib_median),
+#                           'custom_baseline_stdev': int(base_read_16mib_stdev)})
+# client.send_post('add_result/{}'.format(test_16mib_write),
+#                          {'status_id': write_16mib_status, 'version': str(version), 'custom_throughput': int(write_16mib_median),
+#                           'custom_stdev': int(write_16mib_stdev),
+#                           'custom_baseline_throughput': int(base_write_16mib_median),
+#                           'custom_baseline_stdev': int(base_write_16mib_stdev)})
+# client.send_post('add_result/{}'.format(test_latency_10_ms),
+#                          {'status_id': latency_10_ms_status, 'version': str(version), 'custom_throughput': int(latency_10_ms),
+#                           'custom_baseline_throughput': base_latency_10_ms})
+# client.send_post('add_result/{}'.format(test_latency_30_ms),
+#                          {'status_id': latency_30_ms_status, 'version': str(version), 'custom_throughput': int(latency_30_ms),
+#                           'custom_baseline_throughput': base_latency_30_ms})
+# client.send_post('add_result/{}'.format(test_latency_100_ms),
+#                          {'status_id': latency_100_ms_status, 'version': str(version), 'custom_throughput': int(latency_100_ms),
+#                           'custom_baseline_throughput': base_latency_100_ms})
