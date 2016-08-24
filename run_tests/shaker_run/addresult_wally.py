@@ -128,7 +128,7 @@ def get_tests_ids():
         if "Repl: {}".format(repl) in item['title'] and not "[deprecated]" in item['title']:
             test_names[item['title']] = item['id']
     return test_names
-
+repl = 2
 ### Define test id's for each case
 list_t = get_tests_ids()
 for item in list_t.keys():
