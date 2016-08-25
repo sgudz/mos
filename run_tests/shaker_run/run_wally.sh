@@ -37,7 +37,7 @@ sed -i 's/runtime=180/runtime=120/g' wally/suits/io/ceph.cfg
 pip install -r requirements.txt
 curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/test1.yaml > test1.yaml
 curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/default.yaml > default.yaml
-python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" test1.yaml
+python -m wally test "Fuel 9.0-rc2; perf-3 10G; ceph; repl: 3; osd: 3; bonding: off; pg_num: 1024/512" -k test1.yaml
 EOF
 #ssh ${SSH_OPTS} $COMPUTE_IP "bash ${REMOTE_SCRIPT}"
 ssh ${SSH_OPTS} $CONTROLLER_IP "bash ${REMOTE_SCRIPT}"
