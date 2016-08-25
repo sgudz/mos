@@ -85,17 +85,19 @@ if not latency_30_ms:
 latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 
 ### Baseline data
-base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
-base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
-base_write_16mib_median = int(dict(parser.items('testrail'))['base_write_16mib_median'])
-base_write_16mib_stdev = int(dict(parser.items('testrail'))['base_write_16mib_stdev'])
-base_read_4kib_median = int(dict(parser.items('testrail'))['base_read_4kib_median'])
-base_read_4kib_stdev = int(dict(parser.items('testrail'))['base_read_4kib_stdev'])
-base_write_4kib_median = int(dict(parser.items('testrail'))['base_write_4kib_median'])
-base_write_4kib_stdev = int(dict(parser.items('testrail'))['base_write_4kib_stdev'])
-base_latency_10_ms = int(dict(parser.items('testrail'))['base_latency_10_ms'])
-base_latency_30_ms = int(dict(parser.items('testrail'))['base_latency_30_ms'])
-base_latency_100_ms = int(dict(parser.items('testrail'))['base_latency_100_ms'])
+# base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
+# base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
+# base_write_16mib_median = int(dict(parser.items('testrail'))['base_write_16mib_median'])
+# base_write_16mib_stdev = int(dict(parser.items('testrail'))['base_write_16mib_stdev'])
+# base_read_4kib_median = int(dict(parser.items('testrail'))['base_read_4kib_median'])
+# base_read_4kib_stdev = int(dict(parser.items('testrail'))['base_read_4kib_stdev'])
+# base_write_4kib_median = int(dict(parser.items('testrail'))['base_write_4kib_median'])
+# base_write_4kib_stdev = int(dict(parser.items('testrail'))['base_write_4kib_stdev'])
+# base_latency_10_ms = int(dict(parser.items('testrail'))['base_latency_10_ms'])
+# base_latency_30_ms = int(dict(parser.items('testrail'))['base_latency_30_ms'])
+# base_latency_100_ms = int(dict(parser.items('testrail'))['base_latency_100_ms'])
+
+
 
 read_16mib_status = 1
 read_4kib_status = 1
