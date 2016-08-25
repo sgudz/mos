@@ -67,62 +67,6 @@ version = str(dict(parser.items('fuel'))['version'])
 
 repl = int(dict(parser.items('testrail'))['repl'])
 
-read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
-read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
-write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
-write_16mib_stdev = int(dict(parser.items('testrail'))['write_16mib_stdev'])
-read_4kib_median = int(dict(parser.items('testrail'))['read_4kib_median'])
-read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
-write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
-write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
-
-latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
-if not latency_10_ms:
-    latency_10_ms = 0
-latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
-if not latency_30_ms:
-    latency_30_ms = 0
-latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
-
-### Baseline data
-base_read_16mib_median = int(dict(parser.items('testrail'))['base_read_16mib_median'])
-base_read_16mib_stdev = int(dict(parser.items('testrail'))['base_read_16mib_stdev'])
-base_write_16mib_median = int(dict(parser.items('testrail'))['base_write_16mib_median'])
-base_write_16mib_stdev = int(dict(parser.items('testrail'))['base_write_16mib_stdev'])
-base_read_4kib_median = int(dict(parser.items('testrail'))['base_read_4kib_median'])
-base_read_4kib_stdev = int(dict(parser.items('testrail'))['base_read_4kib_stdev'])
-base_write_4kib_median = int(dict(parser.items('testrail'))['base_write_4kib_median'])
-base_write_4kib_stdev = int(dict(parser.items('testrail'))['base_write_4kib_stdev'])
-base_latency_10_ms = int(dict(parser.items('testrail'))['base_latency_10_ms'])
-base_latency_30_ms = int(dict(parser.items('testrail'))['base_latency_30_ms'])
-base_latency_100_ms = int(dict(parser.items('testrail'))['base_latency_100_ms'])
-
-
-
-read_16mib_status = 1
-read_4kib_status = 1
-write_16mib_status = 1
-write_4kib_status = 1
-latency_10_ms_status = 1
-latency_30_ms_status = 1
-latency_100_ms_status = 1
-
-### Define status for tests, based on Baseline - 10%
-if read_16mib_median < float(base_read_16mib_median*0.9):
-    read_16mib_status = 5
-if read_4kib_median < float(base_read_4kib_median*0.9):
-    read_4kib_status = 5
-if write_16mib_median < float(base_write_16mib_median*0.9):
-    write_16mib_status = 5
-if write_4kib_median < float(base_write_4kib_median*0.9):
-    write_4kib_status = 5
-if int(latency_10_ms) < float(base_latency_10_ms*0.9):
-    latency_10_ms_status = 5
-if int(latency_30_ms) < float(base_latency_30_ms*0.9):
-    latency_30_ms_status = 5
-if int(latency_100_ms) < float(base_latency_100_ms*0.9):
-    latency_100_ms_status = 5
-
 def get_tests_ids():
     tests = client.send_get('get_tests/{}'.format(run_id))
     test_names = {}
@@ -148,6 +92,61 @@ for item in list_t.keys():
                 test_latency_30_ms = list_t[item]
         elif "latency 100ms" in item:
                 test_latency_100_ms = list_t[item]
+
+### Baseline data
+
+base_read_16mib_median = client.send_get('get_test/{}')).format(test_16mib_read)['custom_test_case_steps'][0]['expected']
+base_read_16mib_stdev = client.send_get('get_test/{}')).format(test_16mib_read)['custom_test_case_steps'][1]['expected']
+base_write_16mib_median = client.send_get('get_test/{}')).format(test_16mib_write)['custom_test_case_steps'][0]['expected']
+base_write_16mib_stdev = client.send_get('get_test/{}')).format(test_16mib_write)['custom_test_case_steps'][1]['expected']
+base_read_4kib_median = client.send_get('get_test/{}')).format(test_4kib_read)['custom_test_case_steps'][0]['expected']
+base_read_4kib_stdev = client.send_get('get_test/{}')).format(test_4kib_read)['custom_test_case_steps'][1]['expected']
+base_write_4kib_median = client.send_get('get_test/{}')).format(test_4kib_write)['custom_test_case_steps'][0]['expected']
+base_write_4kib_stdev = client.send_get('get_test/{}')).format(test_4kib_write)['custom_test_case_steps'][1]['expected']
+base_latency_10_ms = client.send_get('get_test/{}')).format(test_latency_10_ms)['custom_test_case_steps'][0]['expected']
+base_latency_30_ms = client.send_get('get_test/{}')).format(test_latency_30_ms)['custom_test_case_steps'][0]['expected']
+base_latency_100_ms = client.send_get('get_test/{}')).format(test_latency_100_ms)['custom_test_case_steps'][0]['expected']
+
+read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
+read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
+write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
+write_16mib_stdev = int(dict(parser.items('testrail'))['write_16mib_stdev'])
+read_4kib_median = int(dict(parser.items('testrail'))['read_4kib_median'])
+read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
+write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
+write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
+
+latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
+if not latency_10_ms:
+    latency_10_ms = 0
+latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
+if not latency_30_ms:
+    latency_30_ms = 0
+latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
+
+read_16mib_status = 1
+read_4kib_status = 1
+write_16mib_status = 1
+write_4kib_status = 1
+latency_10_ms_status = 1
+latency_30_ms_status = 1
+latency_100_ms_status = 1
+
+### Define status for tests, based on Baseline - 10%
+if read_16mib_median < float(base_read_16mib_median*0.9):
+    read_16mib_status = 5
+if read_4kib_median < float(base_read_4kib_median*0.9):
+    read_4kib_status = 5
+if write_16mib_median < float(base_write_16mib_median*0.9):
+    write_16mib_status = 5
+if write_4kib_median < float(base_write_4kib_median*0.9):
+    write_4kib_status = 5
+if int(latency_10_ms) < float(base_latency_10_ms*0.9):
+    latency_10_ms_status = 5
+if int(latency_30_ms) < float(base_latency_30_ms*0.9):
+    latency_30_ms_status = 5
+if int(latency_100_ms) < float(base_latency_100_ms*0.9):
+    latency_100_ms_status = 5
                 
 for item in list_t.keys():
     print "Name of test: {}, Id: {}".format(item,list_t[item])
