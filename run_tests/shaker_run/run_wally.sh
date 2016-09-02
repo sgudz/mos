@@ -33,7 +33,7 @@ pip install --upgrade pip
 pip install paramiko pbr vcversioner pyOpenSSL texttable sshtunnel lxml pandas
 git clone https://github.com/Mirantis/disk_perf_test_tool.git
 cd disk_perf_test_tool/
-sed -i 's/runtime=180/runtime=120/g' wally/suits/io/ceph.cfg
+sed -i 's/runtime=180/runtime=360/g' wally/suits/io/ceph.cfg
 #sed -i 's/ramp_time=30/ramp_time=60/g' wally/suits/io/ceph.cfg
 pip install -r requirements.txt
 curl -s https://raw.githubusercontent.com/vortex610/mos/master/run_tests/shaker_run/plugin/test1.yaml > test1.yaml
