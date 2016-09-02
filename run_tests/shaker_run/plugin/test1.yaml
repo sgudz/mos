@@ -28,5 +28,5 @@ tests:
             - io:
                 cfg: ceph
                 params:
-                    FILENAME: /dev/vdb
+                    FILENAME: /dev/vdc
                     TEST_FILE_SIZE: 100G
