@@ -13,16 +13,13 @@ clouds:
 
         # openstack environment
         openstack_env: Build-9.0-mos-495
-    openstack:
-        vms:
-            - "ubuntu@wally-simple_hyena"
 
 discover: fuel_openrc_only
 
 tests:
     - start_test_nodes:
         openstack:
-            count: =2
+            count: x1
             cfg_name: wally_1024
             network_zone_name: admin_internal_net
             flt_ip_pool: admin_floating_net
