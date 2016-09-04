@@ -71,7 +71,7 @@ client.password = 'qwertY123'
 fuel_ip = '172.16.44.19'
 run_id = '18913'
 version = 'version_test'
-repl = 2
+repl = 3
 
 
 def get_tests_ids():
@@ -101,25 +101,19 @@ for item in list_t.keys():
         test_latency_30_ms = list_t[item]
     elif "latency 100ms" in item:
         test_latency_100_ms = list_t[item]
-    else:
-        print "Wrong test: {}".format(list_t[item])
-        exit(1)
 
 ### Baseline data
 base_read_16mib_median = client.send_get('get_test/{}'.format(test_16mib_read))['custom_test_case_steps'][0]['expected']
 base_read_16mib_stdev = client.send_get('get_test/{}'.format(test_16mib_read))['custom_test_case_steps'][1]['expected']
-base_write_16mib_median = client.send_get('get_test/{}'.format(test_16mib_write))['custom_test_case_steps'][0][
-    'expected']
-base_write_16mib_stdev = client.send_get('get_test/{}'.format(test_16mib_write))['custom_test_case_steps'][1][
-    'expected']
+base_write_16mib_median = client.send_get('get_test/{}'.format(test_16mib_write))['custom_test_case_steps'][0]['expected']
+base_write_16mib_stdev = client.send_get('get_test/{}'.format(test_16mib_write))['custom_test_case_steps'][1]['expected']
 base_read_4kib_median = client.send_get('get_test/{}'.format(test_4kib_read))['custom_test_case_steps'][0]['expected']
 base_read_4kib_stdev = client.send_get('get_test/{}'.format(test_4kib_read))['custom_test_case_steps'][1]['expected']
 base_write_4kib_median = client.send_get('get_test/{}'.format(test_4kib_write))['custom_test_case_steps'][0]['expected']
 base_write_4kib_stdev = client.send_get('get_test/{}'.format(test_4kib_write))['custom_test_case_steps'][1]['expected']
 base_latency_10_ms = client.send_get('get_test/{}'.format(test_latency_10_ms))['custom_test_case_steps'][0]['expected']
 base_latency_30_ms = client.send_get('get_test/{}'.format(test_latency_30_ms))['custom_test_case_steps'][0]['expected']
-base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0][
-    'expected']
+base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected']
 
 ### Actual data
 read_16mib_median = base_read_16mib_median
@@ -134,7 +128,7 @@ latency_10_ms = base_latency_10_ms
 latency_30_ms = base_latency_30_ms
 latency_100_ms = base_latency_100_ms
 
-### Status
+### Default status
 read_16mib_glob_status = read_16mib_custom_status = 1
 read_4kib_glob_status = read_4kib_custom_status = 1
 write_16mib_glob_status = write_16mib_custom_status = 1
@@ -159,42 +153,34 @@ if int(latency_30_ms) < float(base_latency_30_ms) * 0.8:
 if int(latency_100_ms) < float(base_latency_100_ms) * 0.8:
     latency_100_ms_glob_status = latency_100_ms_custom_status = 5
 
-# for item in list_t.keys():
-#     print "Name of test: {}, Id: {}".format(item,list_t[item])
-
+### Custom results for tests
 custom_res_4kib_read = [{'status_id': read_4kib_custom_status, 'content': 'Check [Operations per second Median; iops]',
                          'expected': str(base_read_4kib_median), 'actual': str(read_4kib_median)},
                         {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_read_4kib_stdev),
                          'actual': str(read_4kib_stdev)}]
-custom_res_4kib_write = [
-    {'status_id': write_4kib_custom_status, 'content': 'Check [Operations per second Median; iops]',
-     'expected': str(base_write_4kib_median),
-     'actual': str(write_4kib_median)},
-    {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_write_4kib_stdev),
-     'actual': str(write_4kib_stdev)}]
-custom_res_16mib_read = [
-    {'status_id': read_16mib_custom_status, 'content': 'Check [bandwidth Median; MiBps]',
-     'expected': str(base_read_16mib_median),
-     'actual': str(read_16mib_median)},
-    {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_read_16mib_stdev),
-     'actual': str(read_16mib_stdev)}]
-custom_res_16mib_write = [
-    {'status_id': write_16mib_custom_status, 'content': 'Check [bandwidth Median; MiBps]',
-     'expected': str(base_write_16mib_median),
-     'actual': str(write_16mib_median)},
-    {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_write_16mib_stdev),
-     'actual': str(write_16mib_stdev)}]
+custom_res_4kib_write = [{'status_id': write_4kib_custom_status, 'content': 'Check [Operations per second Median; iops]',
+                        'expected': str(base_write_4kib_median),
+                         'actual': str(write_4kib_median)},
+                        {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_write_4kib_stdev),
+                         'actual': str(write_4kib_stdev)}]
+custom_res_16mib_read = [{'status_id': read_16mib_custom_status, 'content': 'Check [bandwidth Median; MiBps]',
+                         'expected': str(base_read_16mib_median),
+                         'actual': str(read_16mib_median)},
+                        {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_read_16mib_stdev),
+                         'actual': str(read_16mib_stdev)}]
+custom_res_16mib_write = [{'status_id': write_16mib_custom_status, 'content': 'Check [bandwidth Median; MiBps]',
+                         'expected': str(base_write_16mib_median),
+                         'actual': str(write_16mib_median)},
+                        {'status_id': 1, 'content': 'Check [deviation; %]', 'expected': str(base_write_16mib_stdev),
+                         'actual': str(write_16mib_stdev)}]
+custom_res_latency_10 = [{'status_id': latency_10_ms_custom_status, 'content': 'Check [operation per sec, iops]',
+                        'expected': str(base_latency_10_ms), 'actual': str(latency_10_ms)}]
+custom_res_latency_30 = [{'status_id': latency_30_ms_custom_status, 'content': 'Check [operation per sec, iops]',
+                        'expected': str(base_latency_30_ms), 'actual': str(latency_30_ms)}]
+custom_res_latency_100 = [{'status_id': latency_100_ms_custom_status, 'content': 'Check [operation per sec, iops]',
+                        'expected': str(base_latency_100_ms), 'actual': str(latency_100_ms)}]
 
-custom_res_latency_10 = [
-    {'status_id': latency_10_ms_custom_status, 'content': 'Check [operation per sec, iops]',
-     'expected': str(base_latency_10_ms), 'actual': str(latency_10_ms)}]
-custom_res_latency_30 = [
-    {'status_id': latency_30_ms_custom_status, 'content': 'Check [operation per sec, iops]',
-     'expected': str(base_latency_30_ms), 'actual': str(latency_30_ms)}]
-custom_res_latency_100 = [
-    {'status_id': latency_100_ms_custom_status, 'content': 'Check [operation per sec, iops]',
-     'expected': str(base_latency_100_ms), 'actual': str(latency_100_ms)}]
-
+### Global results for tests
 res_4kib_read = {'test_id': test_4kib_read, 'status_id': read_4kib_glob_status, 'version': str(version),
                  'custom_test_case_steps_results': custom_res_4kib_read}
 res_4kib_write = {'test_id': test_4kib_write, 'status_id': write_4kib_glob_status, 'version': str(version),
@@ -209,9 +195,12 @@ res_latency_30 = {'test_id': test_latency_30_ms, 'status_id': latency_30_ms_glob
                   'custom_test_case_steps_results': custom_res_latency_30}
 res_latency_100 = {'test_id': test_latency_100_ms, 'status_id': latency_100_ms_glob_status, 'version': str(version),
                    'custom_test_case_steps_results': custom_res_latency_100}
-
+### List off global results
 results_list = [res_4kib_read, res_4kib_write, res_16mib_read, res_16mib_write, res_latency_10, res_latency_30,
                 res_latency_100]
-res_all = {'results': results_list}
 
-print client.send_post('add_results/{}'.format(run_id), res_all)
+### forming dict for testrail with all results
+results_all_dict = {'results': results_list}
+
+### Pushing all resalts to testrail
+client.send_post('add_results/{}'.format(run_id), results_all_dict)
