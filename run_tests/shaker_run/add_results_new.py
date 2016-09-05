@@ -59,20 +59,13 @@ client.user = 'sgudz@mirantis.com'
 client.password = 'qwertY123'
 
 ### Parsing env.conf file for required data
-# parser = ConfigParser.SafeConfigParser()
-# parser.read('/root/env.conf')
-# run_id = dict(parser.items('testrail'))['run_id']
-# fuel_ip = dict(parser.items('fuel'))['fuel_ip']
-# cluster_id = dict(parser.items('fuel'))['cluster_id']
-# version = str(dict(parser.items('fuel'))['version'])
-#
-# repl = int(dict(parser.items('testrail'))['repl'])
-
-fuel_ip = '172.16.44.19'
-run_id = '18913'
-version = 'version_test'
-repl = 3
-
+parser = ConfigParser.SafeConfigParser()
+parser.read('/root/env.conf')
+run_id = dict(parser.items('testrail'))['run_id']
+fuel_ip = dict(parser.items('fuel'))['fuel_ip']
+cluster_id = dict(parser.items('fuel'))['cluster_id']
+version = str(dict(parser.items('fuel'))['version'])
+repl = int(dict(parser.items('testrail'))['repl'])
 
 def get_tests_ids():
     tests = client.send_get('get_tests/{}'.format(run_id))
@@ -116,17 +109,22 @@ base_latency_30_ms = client.send_get('get_test/{}'.format(test_latency_30_ms))['
 base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected']
 
 ### Actual data
-read_16mib_median = base_read_16mib_median
-read_16mib_stdev = base_read_16mib_stdev
-write_16mib_median = base_write_16mib_median
-write_16mib_stdev = base_write_16mib_stdev
-read_4kib_median = base_read_4kib_median
-read_4kib_stdev = base_read_4kib_stdev
-write_4kib_median = base_write_4kib_median
-write_4kib_stdev = base_write_4kib_stdev
-latency_10_ms = base_latency_10_ms
-latency_30_ms = base_latency_30_ms
-latency_100_ms = base_latency_100_ms
+read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
+read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
+write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
+write_16mib_stdev = int(dict(parser.items('testrail'))['write_16mib_stdev'])
+read_4kib_median = int(dict(parser.items('testrail'))['read_4kib_median'])
+read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
+write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
+write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
+
+latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
+if not latency_10_ms:
+    latency_10_ms = 0
+latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
+if not latency_30_ms:
+    latency_30_ms = 0
+latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 
 ### Default status
 read_16mib_glob_status = read_16mib_custom_status = 1
