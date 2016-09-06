@@ -190,6 +190,12 @@ compute_id2 = get_computes(fuel_ip, token_id)[1]
 #     offloading = False
 # else:
 #     offloading = "Unknown"
+class ClusterError(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+        
 offloading = True
 if dvr and vxlan and offloading:
     test_id = test3
@@ -208,7 +214,9 @@ elif l3ha and vlan and offloading and between_nodes:
 elif l3ha and vlan and offloading:
     test_id = test8
 else:
-    test_id = test8
+    #print "Wrong cluster config. DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
+    raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
+    #test_id = test8
 print "Test ID for testing: {}".format(test_id)
 print "DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
 content = dict(parser.items('test_json'))['json_data']
