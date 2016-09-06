@@ -145,4 +145,6 @@ fi
 # echo "json_data =" $JSON_DATA >> env.conf
 
 /usr/bin/python addresult.py
+rm addresult.py
+rm run_shaker.sh
 echo "Done."
