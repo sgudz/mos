@@ -3,6 +3,8 @@ import base64
 import json
 import urllib2
 
+print "HELLLLOOO"
+
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
 fuel_ip = dict(parser.items('fuel'))['fuel_ip']
