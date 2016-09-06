@@ -216,7 +216,7 @@ elif l3ha and vlan and offloading:
     test_id = test8
 else:
     #print "Wrong cluster config. DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
-    #raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
+    raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
     sys.exit("Wrong cluster config")
     #test_id = test8
 print "Test ID for testing: {}".format(test_id)
