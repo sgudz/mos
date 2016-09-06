@@ -144,5 +144,5 @@ fi
 # echo "[test_json]" >> env.conf
 # echo "json_data =" $JSON_DATA >> env.conf
 
-python addresult.py
+/usr/bin/python addresult.py
 echo "Done."
