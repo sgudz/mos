@@ -217,6 +217,6 @@ for i in range(len(item)):
     except KeyError:
         continue
 
-client.send_post('add_result/{}'.format(test_id),
+print client.send_post('add_result/{}'.format(test_id),
                           {'status_id': 1, 'version': str(version), 'custom_throughput': int(median),
                            'custom_stdev': int(stdev)})
