@@ -3,7 +3,7 @@ import base64
 import json
 import urllib2
 
-print "yabadabadoo"
+print "habrahabra"
 
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
