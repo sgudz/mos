@@ -3,7 +3,7 @@ import base64
 import json
 import urllib2
 
-print "HELLLLOOO"
+print "yabadabadoo"
 
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
@@ -208,7 +208,7 @@ elif l3ha and vlan and offloading and between_nodes:
 elif l3ha and vlan and offloading:
     test_id = test8
 else:
-    print "wrong test"
+    test_id = test8
 print "Test ID for testing: {}".format(test_id)
 print "DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
 content = dict(parser.items('test_json'))['json_data']
