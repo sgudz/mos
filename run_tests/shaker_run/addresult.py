@@ -88,6 +88,7 @@ def get_tests_ids():
         tests = client.send_get('get_tests/{}'.format(run_id))
         tests_ids = []
         tests_dict = {}
+        print tests
         for item in tests:
             tests_ids.append(item['id'])
         print tests_ids
