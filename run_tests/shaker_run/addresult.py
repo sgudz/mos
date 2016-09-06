@@ -90,6 +90,7 @@ def get_tests_ids():
         tests_dict = {}
         for item in tests:
             tests_ids.append(item['id'])
+        print tests_ids
         return tests_ids
 
 def get_token_id(fuel_ip):
