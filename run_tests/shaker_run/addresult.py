@@ -224,15 +224,15 @@ json_data = json.loads(content)
 item = [each for each in json_data['records']]
 for i in range(len(item)):
     try:
-        median = json_data['records'][item[i]]['stats']['bandwidth']['median']
-        stdev = json_data['records'][item[i]]['stats']['bandwidth']['stdev']
+        median = int(round(json_data['records'][item[i]]['stats']['bandwidth']['median'], 0))
+        stdev = int(round(json_data['records'][item[i]]['stats']['bandwidth']['stdev'], 0))
     except KeyError:
         continue
 
 test_glob_status = test_custom_median_status = test_custom_stdev_status = 1
-if median < float(base_median) * 0.5:
+if median < float(base_median) * 0.9:
     test_glob_status = test_custom_median_status = 5
-if stdev < float(base_stdev) * 0.9:
+if stdev < float(base_stdev) * 0.5:
     test_custom_stdev_status = 5
 
 ### Collecting results
