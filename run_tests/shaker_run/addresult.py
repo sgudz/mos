@@ -235,13 +235,15 @@ for i in range(len(item)):
     except KeyError:
         continue
 
-test_glob_status = test_custom_status = 1
+test_glob_status = test_custom_median_status = test_custom_stdev_status = 1
 if median < float(base_median) * 0.8:
     test_glob_status = test_custom_status = 5
+if stdev < float(base_stdev) * 0.8:
+    test_custom_stdev_status = 5
 
-custom_test_res = [{'status_id': test_custom_status, 'content': 'Check [network bandwidth, Median; Mbps]',
+custom_test_res = [{'status_id': test_custom_median_status, 'content': 'Check [network bandwidth, Median; Mbps]',
                          'expected': str(base_median), 'actual': str(median)},
-                        {'status_id': test_custom_status, 'content': 'Check [deviation; pcs]', 'expected': str(base_stdev),
+                        {'status_id': test_custom_stdev_status, 'content': 'Check [deviation; pcs]', 'expected': str(base_stdev),
                          'actual': str(stdev)}]
 glob_test_result = {'test_id': test_id, 'status_id': test_glob_status, 'version': str(version),
                  'custom_test_case_steps_results': custom_test_res}
