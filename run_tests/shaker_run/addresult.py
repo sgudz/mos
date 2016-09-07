@@ -216,9 +216,15 @@ elif l3ha and vlan and offloading:
     test_id = test8
 else:
     #print "Wrong cluster config. DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
-    raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
-    sys.exit("Wrong cluster config")
-    #test_id = test8
+    #raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
+    #sys.exit("Wrong cluster config")
+    test_id = test8
+
+base_median = client.send_get('get_test/{}'.format(test_id))['custom_test_case_steps'][0]['expected']
+base_stdev = client.send_get('get_test/{}'.format(test_id))['custom_test_case_steps'][1]['expected']
+
+
+
 print "Test ID for testing: {}".format(test_id)
 print "DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
 content = dict(parser.items('test_json'))['json_data']
@@ -231,6 +237,19 @@ for i in range(len(item)):
     except KeyError:
         continue
 
-print client.send_post('add_result/{}'.format(test_id),
-                          {'status_id': 1, 'version': str(version), 'custom_throughput': int(median),
-                           'custom_stdev': int(stdev)})
+test_glob_status = test_custom_status = 1
+if median < float(base_median) * 0.8:
+    test_glob_status = test_custom_status = 5
+
+custom_test_res = [{'status_id': test_custom_status, 'content': 'Check [network bandwidth, Median; Mbps]',
+                         'expected': str(base_median), 'actual': str(median)},
+                        {'status_id': test_custom_status, 'content': 'Check [deviation; pcs]', 'expected': str(base_stdev),
+                         'actual': str(stdev)}]
+glob_test_result = {'test_id': test_id, 'status_id': test_glob_status, 'version': str(version),
+                 'custom_test_case_steps_results': custom_test_res}
+
+results_all_dict = {'results': [glob_test_result]}
+print client.send_post('add_results/{}'.format(run_id), results_all_dict)
+# print client.send_post('add_result/{}'.format(test_id),
+#                           {'status_id': 1, 'version': str(version), 'custom_throughput': int(median),
+#                           'custom_stdev': int(stdev)})
