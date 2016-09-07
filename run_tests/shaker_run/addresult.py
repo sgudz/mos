@@ -74,7 +74,7 @@ client = APIClient('https://mirantis.testrail.com/')
 client.user = 'sgudz@mirantis.com'
 client.password = 'qwertY123'
 
-def get_tests_ids():
+def get_run_id():
     create_new_run = dict(parser.items('testrail'))['create_new_run']
     if create_new_run == "true":
         run_name = dict(parser.items('testrail'))['run_name']
@@ -82,23 +82,20 @@ def get_tests_ids():
         data_str = """{"suite_id": %(suite_id)s, "name": "%(name)s", "assignedto_id": 89, "include_all": true}""" %{"suite_id": suite_id, "name": run_name}
         data = json.loads(data_str)
         result = client.send_post('add_run/3', data)
-        run_id = result['id']
-        tests = client.send_get('get_tests/{}'.format(run_id))
-        tests_ids = []
-        for item in tests:
-            tests_ids.append(item['id'])
-        return tests_ids
+        return result['id']
     else:
-        run_id = dict(parser.items('testrail'))['run_id']
-        tests = client.send_get('get_tests/{}'.format(run_id))
-        tests_ids = []
-        tests_dict = {}
-        print tests
-        for item in tests:
-            tests_ids.append(item['id'])
-        print tests_ids
-        return tests_ids
+        return dict(parser.items('testrail'))['run_id']
 
+run_id = get_run_id()
+
+def get_tests_ids(run_id):
+    tests = client.send_get('get_tests/{}'.format(run_id))
+    tests_ids = []
+    for item in tests:
+        tests_ids.append(item['id'])
+    return tests_ids
+    
+    
 def get_token_id(fuel_ip):
     url='http://{}:5000/v2.0/tokens'.format(fuel_ip)
     headers={'Content-Type': 'application/json', 'Accept': 'application/json'}
@@ -172,7 +169,7 @@ token_id = get_token_id(fuel_ip)
 
 median = 0
 stdev = 0
-test1, test2, test3, test4, test5, test6, test7, test8 = get_tests_ids()
+test1, test2, test3, test4, test5, test6, test7, test8 = get_tests_ids(run_id)
 seg_type = get_neutron_conf(fuel_ip, token_id)['networking_parameters']['segmentation_type']
 if seg_type == 'vlan':
     vlan = True
