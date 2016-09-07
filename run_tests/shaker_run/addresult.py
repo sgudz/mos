@@ -4,7 +4,7 @@ import json
 import urllib2
 import sys
 
-print "habrahabra"
+print "aaaaaaa"
 
 
 parser = ConfigParser.SafeConfigParser()
