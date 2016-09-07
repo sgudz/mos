@@ -85,8 +85,6 @@ def get_run_id():
     else:
         return dict(parser.items('testrail'))['run_id']
 
-run_id = get_run_id()
-
 def get_tests_ids(run_id):
     tests = client.send_get('get_tests/{}'.format(run_id))
     tests_ids = []
@@ -168,6 +166,7 @@ token_id = get_token_id(fuel_ip)
 
 median = 0
 stdev = 0
+run_id = get_run_id()
 test1, test2, test3, test4, test5, test6, test7, test8 = get_tests_ids(run_id)
 seg_type = get_neutron_conf(fuel_ip, token_id)['networking_parameters']['segmentation_type']
 if seg_type == 'vlan':
@@ -189,11 +188,6 @@ compute_id2 = get_computes(fuel_ip, token_id)[1]
 #     offloading = False
 # else:
 #     offloading = "Unknown"
-class ClusterError(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-        return repr(self.value)
         
 offloading = True
 if dvr and vxlan and offloading:
@@ -238,9 +232,10 @@ for i in range(len(item)):
 test_glob_status = test_custom_median_status = test_custom_stdev_status = 1
 if median < float(base_median) * 0.8:
     test_glob_status = test_custom_median_status = 5
-if stdev < float(base_stdev) * 0.8:
+if stdev < float(base_stdev) * 0.9:
     test_custom_stdev_status = 5
 
+### Collecting results
 custom_test_res = [{'status_id': test_custom_median_status, 'content': 'Check [network bandwidth, Median; Mbps]',
                          'expected': str(base_median), 'actual': str(median)},
                         {'status_id': test_custom_stdev_status, 'content': 'Check [deviation; pcs]', 'expected': str(base_stdev),
@@ -249,7 +244,4 @@ glob_test_result = {'test_id': test_id, 'status_id': test_glob_status, 'version'
                  'custom_test_case_steps_results': custom_test_res}
 
 results_all_dict = {'results': [glob_test_result]}
-print client.send_post('add_results/{}'.format(run_id), results_all_dict)
-# print client.send_post('add_result/{}'.format(test_id),
-#                           {'status_id': 1, 'version': str(version), 'custom_throughput': int(median),
-#                           'custom_stdev': int(stdev)})
+client.send_post('add_results/{}'.format(run_id), results_all_dict)
