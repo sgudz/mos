@@ -6,7 +6,7 @@ import sys
 
 print "habrahabra"
 
-global run_id
+
 parser = ConfigParser.SafeConfigParser()
 parser.read('/root/env.conf')
 fuel_ip = dict(parser.items('fuel'))['fuel_ip']
@@ -17,6 +17,7 @@ cluster_id = dict(parser.items('fuel'))['cluster_id']
 between_nodes = dict(parser.items('testrail'))['between_nodes']
 between_nodes = True if between_nodes == "true" else False
 version = str(dict(parser.items('fuel'))['version'])
+run_id = dict(parser.items('testrail'))['run_id']
 print "create new run: {}".format(create_new_run)
 if create_new_run == "true":
     print "suite_id: {}".format(suite_id)
@@ -88,7 +89,6 @@ def get_tests_ids():
             tests_ids.append(item['id'])
         return tests_ids
     else:
-        run_id = dict(parser.items('testrail'))['run_id']
         tests = client.send_get('get_tests/{}'.format(run_id))
         tests_ids = []
         tests_dict = {}
