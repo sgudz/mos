@@ -87,7 +87,7 @@ def get_tests_ids():
             tests_ids.append(item['id'])
         return tests_ids
     else:
-        run_id = dict(parser.items('testrail'))['run_id']
+        global run_id = dict(parser.items('testrail'))['run_id']
         tests = client.send_get('get_tests/{}'.format(run_id))
         tests_ids = []
         tests_dict = {}
