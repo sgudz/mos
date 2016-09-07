@@ -230,7 +230,7 @@ for i in range(len(item)):
         continue
 
 test_glob_status = test_custom_median_status = test_custom_stdev_status = 1
-if median < float(base_median) * 0.8:
+if median < float(base_median) * 0.5:
     test_glob_status = test_custom_median_status = 5
 if stdev < float(base_stdev) * 0.9:
     test_custom_stdev_status = 5
