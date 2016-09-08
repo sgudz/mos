@@ -137,29 +137,29 @@ def get_computes(fuel_ip, token_id):
             compute_ids.append(node)
     return compute_ids
 
-def get_offloading(fuel_ip, token_id):
-    headers = {'X-Auth-Token': token_id}
-    offloading_nodes = {}
-    for node in get_nodes(fuel_ip, token_id):
-        url = 'http://{0}:8000/api/nodes/{1}/interfaces'.format(fuel_ip, node)
-        req = urllib2.Request(url, headers=headers)
-        content = urllib2.urlopen(req)
-        interface_data = json.load(content)
-        for item in interface_data:
-            if item['name'] == interface:
-                interface_data = item
-        state_list = []
-        for item in interface_data['offloading_modes']:
-            state_list.append(item['state'])
-        for item in state_list:
-            if item is None:
-                state = "Default"
-            elif not item:
-                state = False
-            else:
-                state = True
-            offloading_nodes["Node-" + str(node)] = state
-    return offloading_nodes
+# def get_offloading(fuel_ip, token_id):
+#     headers = {'X-Auth-Token': token_id}
+#     offloading_nodes = {}
+#     for node in get_nodes(fuel_ip, token_id):
+#         url = 'http://{0}:8000/api/nodes/{1}/interfaces'.format(fuel_ip, node)
+#         req = urllib2.Request(url, headers=headers)
+#         content = urllib2.urlopen(req)
+#         interface_data = json.load(content)
+#         for item in interface_data:
+#             if item['name'] == interface:
+#                 interface_data = item
+#         state_list = []
+#         for item in interface_data['offloading_modes']:
+#             state_list.append(item['state'])
+#         for item in state_list:
+#             if item is None:
+#                 state = "Default"
+#             elif not item:
+#                 state = False
+#             else:
+#                 state = True
+#             offloading_nodes["Node-" + str(node)] = state
+#     return offloading_nodes
 
 if __name__ == "__main__":
     token_id = get_token_id(fuel_ip)
@@ -179,15 +179,14 @@ if __name__ == "__main__":
     nodes = get_nodes(fuel_ip, token_id)
     compute_id1 = get_computes(fuel_ip, token_id)[0]
     compute_id2 = get_computes(fuel_ip, token_id)[1]
-    offloading_compute1 = get_offloading(fuel_ip, token_id)['Node-{}'.format(compute_id1)]
-    offloading_compute2 = get_offloading(fuel_ip, token_id)['Node-{}'.format(compute_id2)]
-    if offloading_compute1 and offloading_compute2:
-        offloading = True
-    elif not offloading_compute1 and not offloading_compute2:
-        offloading = False
-    else:
-        offloading = "Unknown"
-            
+    # offloading_compute1 = get_offloading(fuel_ip, token_id)['Node-{}'.format(compute_id1)]
+    # offloading_compute2 = get_offloading(fuel_ip, token_id)['Node-{}'.format(compute_id2)]
+    # if offloading_compute1 and offloading_compute2:
+    #     offloading = True
+    # elif not offloading_compute1 and not offloading_compute2:
+    #     offloading = False
+    # else:
+    #     offloading = "Unknown"
     offloading = True
     if dvr and vxlan and offloading:
         test_id = test3
