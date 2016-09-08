@@ -139,7 +139,6 @@ else
         scp $CONTROLLER_ADMIN_IP:/root/VMs_$DATE.html /root/VMs_build\-$BUILD\-$DATE.html
         JSON_DATA=$(cat /root/VMs_build\-$BUILD\-$DATE.html | grep -P "var report" | sed 's/    var report = //g' | sed 's/\;$//g')
 fi
-JSON_DATA=$(cat /root/VM.html | grep -P "var report" | sed 's/    var report = //g' | sed 's/\;$//g')
 echo "[test_json]" >> env.conf
 echo "json_data =" $JSON_DATA >> env.conf
 
