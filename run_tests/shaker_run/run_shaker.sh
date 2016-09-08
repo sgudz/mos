@@ -34,8 +34,7 @@ printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sou
 apt-get update
 apt-get -y install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
 
-iptables -I INPUT -s 10.20.0.0/16 -j ACCEPT
-iptables -I INPUT -s 10.0.0.0/16 -j ACCEPT
+iptables -I INPUT -s 10.0.0.0/8 -j ACCEPT
 iptables -I INPUT -s 172.16.0.0/16 -j ACCEPT
 iptables -I INPUT -s 192.168.0.0/16 -j ACCEPT
 
@@ -65,8 +64,7 @@ printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sou
 apt-get update
 apt-get -y install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
 
-iptables -I INPUT -s 10.20.0.0/16 -j ACCEPT
-iptables -I INPUT -s 10.0.0.0/16 -j ACCEPT
+iptables -I INPUT -s 10.0.0.0/8 -j ACCEPT
 iptables -I INPUT -s 172.16.0.0/16 -j ACCEPT
 iptables -I INPUT -s 192.168.0.0/16 -j ACCEPT
 EOF
