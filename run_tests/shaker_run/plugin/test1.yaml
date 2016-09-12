@@ -1,5 +1,5 @@
 include: default.yaml
-lab_name: Env-19 (Perf-3)
+lab_name: ENV-15(Ceph)
 
 clouds:
     fuel:
