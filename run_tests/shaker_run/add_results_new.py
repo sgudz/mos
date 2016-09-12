@@ -193,7 +193,7 @@ res_latency_30 = {'test_id': test_latency_30_ms, 'status_id': latency_30_ms_glob
                   'custom_test_case_steps_results': custom_res_latency_30}
 res_latency_100 = {'test_id': test_latency_100_ms, 'status_id': latency_100_ms_glob_status, 'version': str(version),
                    'custom_test_case_steps_results': custom_res_latency_100}
-### List off global results
+### List of global results
 results_list = [res_4kib_read, res_4kib_write, res_16mib_read, res_16mib_write, res_latency_10, res_latency_30,
                 res_latency_100]
 
