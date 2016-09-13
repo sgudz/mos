@@ -106,7 +106,7 @@ base_write_4kib_median = client.send_get('get_test/{}'.format(test_4kib_write))[
 base_write_4kib_stdev = client.send_get('get_test/{}'.format(test_4kib_write))['custom_test_case_steps'][1]['expected']
 base_latency_10_ms = client.send_get('get_test/{}'.format(test_latency_10_ms))['custom_test_case_steps'][0]['expected']
 base_latency_30_ms = client.send_get('get_test/{}'.format(test_latency_30_ms))['custom_test_case_steps'][0]['expected']
-base_latency_100_ms = float(client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected'])
+base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected']
 
 ### Actual data
 read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
@@ -144,11 +144,11 @@ if write_16mib_median < float(base_write_16mib_median) * 0.8:
     write_16mib_glob_status = write_16mib_custom_status = 5
 if write_4kib_median < float(base_write_4kib_median) * 0.8:
     write_4kib_glob_status = write_4kib_custom_status = 5
-if int(latency_10_ms) < float(base_latency_10_ms) * 0.8:
+if latency_10_ms < float(base_latency_10_ms) * 0.8:
     latency_10_ms_glob_status = latency_10_ms_custom_status = 5
-if int(latency_30_ms) < float(base_latency_30_ms) * 0.8:
+if latency_30_ms < float(base_latency_30_ms) * 0.8:
     latency_30_ms_glob_status = latency_30_ms_custom_status = 5
-if int(latency_100_ms) < float(base_latency_100_ms) * 0.8:
+if latency_100_ms < float(base_latency_100_ms) * 0.8:
     latency_100_ms_glob_status = latency_100_ms_custom_status = 5
 
 ### Custom results for tests
