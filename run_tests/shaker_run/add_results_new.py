@@ -106,7 +106,7 @@ base_write_4kib_median = client.send_get('get_test/{}'.format(test_4kib_write))[
 base_write_4kib_stdev = client.send_get('get_test/{}'.format(test_4kib_write))['custom_test_case_steps'][1]['expected']
 base_latency_10_ms = client.send_get('get_test/{}'.format(test_latency_10_ms))['custom_test_case_steps'][0]['expected']
 base_latency_30_ms = client.send_get('get_test/{}'.format(test_latency_30_ms))['custom_test_case_steps'][0]['expected']
-base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected']
+base_latency_100_ms = float(client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected'])
 
 ### Actual data
 read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
