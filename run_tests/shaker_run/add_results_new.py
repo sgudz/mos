@@ -118,6 +118,7 @@ read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
 write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
 write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
 
+latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
 try:
     latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
 except ValueError:
