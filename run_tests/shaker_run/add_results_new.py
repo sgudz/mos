@@ -118,19 +118,12 @@ read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
 write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
 write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
 
-try:
-    latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
-except ValueError:
-    latency_10_ms = 0
-try:
-    latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
-except ValueError:
-    latency_30_ms = 0
-try:
-    latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
-except ValueError:
-    latency_100_ms = float(dict(parser.items('testrail'))['latency_100_ms'])
+latency_10_ms = dict(parser.items('testrail'))['latency_10_ms']
+latency_30_ms = dict(parser.items('testrail'))['latency_30_ms']
+latency_100_ms = dict(parser.items('testrail'))['latency_100_ms']
 
+print latency_10_ms, latency_30_ms, latency_100_ms
+print type(latency_10_ms), type(latency_30_ms), type(latency_100_ms)
 ### Default status
 read_16mib_glob_status = read_16mib_custom_status = 1
 read_4kib_glob_status = read_4kib_custom_status = 1
