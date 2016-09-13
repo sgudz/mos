@@ -58,7 +58,7 @@ WRITE_4KIB_STDEV=$(cat ceph_report.html | grep -A1 "Write" | awk '(NR == 2)' | g
 
 LATENCY_10_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>10" | awk '(NR == 2)' | grep -Eo "[0-9]*")
 LATENCY_30_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>30" | awk '(NR == 2)' | grep -Eo "[0-9]*")
-LATENCY_100_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>100" | awk '(NR == 2)' | grep -Eo "[0-9]*")
+LATENCY_100_IOPS=$(cat ceph_report.html | grep -PA1 "align\=\"right\"\>100" | awk '(NR == 5)' | grep -Eo "[0-9]*")
 echo "repl =" $REPL >> env.conf
 echo "read_16mib_median =" $READ_16MIB_MEDIAN >> env.conf
 echo "read_16mib_stdev =" $READ_16MIB_STDEV >> env.conf
