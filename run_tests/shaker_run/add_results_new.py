@@ -122,14 +122,10 @@ latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
 try:
     latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
 except ValueError:
-    latency_10_ms = float(dict(parser.items('testrail'))['latency_10_ms'])
-if not latency_10_ms:
     latency_10_ms = 0
 try:
     latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
 except ValueError:
-    latency_30_ms = float(dict(parser.items('testrail'))['latency_30_ms'])
-if not latency_30_ms:
     latency_30_ms = 0
 try:
     latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
