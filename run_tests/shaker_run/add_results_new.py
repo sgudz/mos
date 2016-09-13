@@ -126,9 +126,11 @@ try:
     latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
 except ValueError:
     latency_30_ms = 0
+try:
+    latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
+except ValueError:
+    latency_100_ms = 0
     
-latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
-
 print latency_10_ms, latency_30_ms, latency_100_ms
 print type(latency_10_ms), type(latency_30_ms), type(latency_100_ms)
 ### Default status
