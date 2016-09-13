@@ -1,9 +1,9 @@
 include: default.yaml
-lab_name: ENV-15(Ceph)
+lab_name: ENV-19 (Perf-3)
 
 clouds:
     fuel:
-        url: http://172.16.44.15:8000/
+        url: http://172.16.44.19:8000/
 
         # fuel UI creds
         creds: admin:admin@admin #admin:admin@admin
