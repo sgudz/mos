@@ -192,19 +192,19 @@ latency_30_ms_glob_status = latency_30_ms_custom_status = 1
 latency_100_ms_glob_status = latency_100_ms_custom_status = 1
 
 ### Define status for tests, based on Baseline - 20%
-if read_16mib_median < float(base_read_16mib_median) * 0.8:
+if read_16mib_median < float(base_read_16mib_median) * 0.9:
     read_16mib_glob_status = read_16mib_custom_status = 5
-if read_4kib_median < float(base_read_4kib_median) * 0.8:
+if read_4kib_median < float(base_read_4kib_median) * 0.9:
     read_4kib_glob_status = read_4kib_custom_status = 5
-if write_16mib_median < float(base_write_16mib_median) * 0.8:
+if write_16mib_median < float(base_write_16mib_median) * 0.9:
     write_16mib_glob_status = write_16mib_custom_status = 5
-if write_4kib_median < float(base_write_4kib_median) * 0.8:
+if write_4kib_median < float(base_write_4kib_median) * 0.9:
     write_4kib_glob_status = write_4kib_custom_status = 5
-if latency_10_ms < float(base_latency_10_ms) * 0.8:
+if latency_10_ms < float(base_latency_10_ms) * 0.9:
     latency_10_ms_glob_status = latency_10_ms_custom_status = 5
-if latency_30_ms < float(base_latency_30_ms) * 0.8:
+if latency_30_ms < float(base_latency_30_ms) * 0.9:
     latency_30_ms_glob_status = latency_30_ms_custom_status = 5
-if latency_100_ms < float(base_latency_100_ms) * 0.8:
+if latency_100_ms < float(base_latency_100_ms) * 0.9:
     latency_100_ms_glob_status = latency_100_ms_custom_status = 5
 
 ### Custom results for tests
