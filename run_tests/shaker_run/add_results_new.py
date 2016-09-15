@@ -30,6 +30,11 @@ def parse_results():
 		rws30ms_data = int(soup3.find_all('td')[5].string)
 	except ValueError:
         	rws30ms_data = 0
+        if "=" in str(soup3.find_all('td')[7].string):
+        	rws100ms_data = int(soup3.find_all('td')[7].string[2:])
+        else:
+        	rws100ms_data = int(soup3.find_all('td')[7].string)
+
 	rws100ms_data = int(soup3.find_all('td')[7].string[2:])
 	rrd4k_iops = int(re.findall(r"[\d']+", rrd4k_data)[0])
 	rwd4k_iops = int(re.findall(r"[\d']+", rwd4k_data)[0])
