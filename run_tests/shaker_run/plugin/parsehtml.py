@@ -3,7 +3,6 @@ try:
 except ImportError:
     from bs4 import BeautifulSoup
 import re
-import sys
 
 def parse_results(report):
 	data = open('/root/{}'.format(report))
