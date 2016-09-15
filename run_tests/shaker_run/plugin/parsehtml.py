@@ -1,8 +1,8 @@
-try: 
+import re
+try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
     from bs4 import BeautifulSoup
-import re
 
 data = open('/root/ceph_report.html')
 structure = str(data.readlines())
@@ -19,24 +19,24 @@ rrd16MiB_data = soup2.find_all('td')[3].string
 rwd16MiB_data = soup2.find_all('td')[5].string
 
 try:
-	rws10ms_data = int(soup3.find_all('td')[3].string)
+        rws10ms_data = int(soup3.find_all('td')[3].string)
 except ValueError:
-	rws10ms_data = 0
+        rws10ms_data = 0
 try:
-	rws30ms_data = int(soup3.find_all('td')[5].string)
+        rws30ms_data = int(soup3.find_all('td')[5].string)
 except ValueError:
         rws30ms_data = 0
 rws100ms_data = int(soup3.find_all('td')[7].string[2:])
 
-rrd4k_iops = re.findall(r"[\d']+", rrd4k_data)[0]
-rwd4k_iops = re.findall(r"[\d']+", rwd4k_data)[0]
-rrd16MiB_bandwidth = re.findall(r"[\d']+", rrd16MiB_data)[0]
-rwd16MiB_bandwidth = re.findall(r"[\d']+", rwd16MiB_data)[0]
+rrd4k_iops = int(re.findall(r"[\d']+", rrd4k_data)[0])
+rwd4k_iops = int(re.findall(r"[\d']+", rwd4k_data)[0])
+rrd16MiB_bandwidth = int(re.findall(r"[\d']+", rrd16MiB_data)[0])
+rwd16MiB_bandwidth = int(re.findall(r"[\d']+", rwd16MiB_data)[0])
 
-rrd4k_dev = re.findall(r"[\d']+", rrd4k_data)[-1]
-rwd4k_dev = re.findall(r"[\d']+", rwd4k_data)[-1]
-rrd16MiB_dev = re.findall(r"[\d']+", rrd16MiB_data)[-1]
-rwd16MiB_dev = re.findall(r"[\d']+", rwd16MiB_data)[-1]
+rrd4k_dev = int(re.findall(r"[\d']+", rrd4k_data)[-1])
+rwd4k_dev = int(re.findall(r"[\d']+", rwd4k_data)[-1])
+rrd16MiB_dev = int(re.findall(r"[\d']+", rrd16MiB_data)[-1])
+rwd16MiB_dev = int(re.findall(r"[\d']+", rwd16MiB_data)[-1])
 
 
 print "rrd4k_iops = {}".format(rrd4k_iops), "Dev : {}".format(rrd4k_dev)
