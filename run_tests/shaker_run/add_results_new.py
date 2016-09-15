@@ -152,15 +152,6 @@ base_latency_30_ms = client.send_get('get_test/{}'.format(test_latency_30_ms))['
 base_latency_100_ms = client.send_get('get_test/{}'.format(test_latency_100_ms))['custom_test_case_steps'][0]['expected']
 
 ### Actual data
-# read_16mib_median = int(dict(parser.items('testrail'))['read_16mib_median'])
-# read_16mib_stdev = int(dict(parser.items('testrail'))['read_16mib_stdev'])
-# write_16mib_median = int(dict(parser.items('testrail'))['write_16mib_median'])
-# write_16mib_stdev = int(dict(parser.items('testrail'))['write_16mib_stdev'])
-# read_4kib_median = int(dict(parser.items('testrail'))['read_4kib_median'])
-# read_4kib_stdev = int(dict(parser.items('testrail'))['read_4kib_stdev'])
-# write_4kib_median = int(dict(parser.items('testrail'))['write_4kib_median'])
-# write_4kib_stdev = int(dict(parser.items('testrail'))['write_4kib_stdev'])
-
 read_16mib_median = parse_results()["rrd16MiB_bandwidth"]
 read_16mib_stdev = parse_results()["rrd16MiB_dev"]
 write_16mib_median = parse_results()["rwd16MiB_bandwidth"]
@@ -173,21 +164,6 @@ latency_10_ms = parse_results()["rws10ms_data"]
 latency_30_ms = parse_results()["rws30ms_data"]
 latency_100_ms = parse_results()["rws100ms_data"]
 
-# try:
-#     latency_10_ms = int(dict(parser.items('testrail'))['latency_10_ms'])
-# except ValueError:
-#     latency_10_ms = 0
-# try:
-#     latency_30_ms = int(dict(parser.items('testrail'))['latency_30_ms'])
-# except ValueError:
-#     latency_30_ms = 0
-# try:
-#     latency_100_ms = int(dict(parser.items('testrail'))['latency_100_ms'])
-# except ValueError:
-#     latency_100_ms = 0
-    
-print latency_10_ms, latency_30_ms, latency_100_ms
-print type(latency_10_ms), type(latency_30_ms), type(latency_100_ms)
 ### Default status
 read_16mib_glob_status = read_16mib_custom_status = 1
 read_4kib_glob_status = read_4kib_custom_status = 1
