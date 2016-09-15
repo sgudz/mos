@@ -39,6 +39,7 @@ def parse_results():
 	rwd4k_dev = int(re.findall(r"[\d']+", rwd4k_data)[-1])
 	rrd16MiB_dev = int(re.findall(r"[\d']+", rrd16MiB_data)[-1])
 	rwd16MiB_dev = int(re.findall(r"[\d']+", rwd16MiB_data)[-1])
+	print rws100ms_data
 	return dict({"rws10ms_data": rws10ms_data, "rws30ms_data": rws30ms_data, "rws100ms_data": rws100ms_data, "rrd4k_iops": rrd4k_iops, "rwd4k_iops": rwd4k_iops, "rrd16MiB_bandwidth": rrd16MiB_bandwidth, "rwd16MiB_bandwidth": rwd16MiB_bandwidth, "rrd4k_dev": rrd4k_dev, "rwd4k_dev": rwd4k_dev, "rrd16MiB_dev": rrd16MiB_dev, "rwd16MiB_dev": rwd16MiB_dev})
 
 # Testrail API
