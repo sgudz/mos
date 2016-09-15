@@ -4,7 +4,7 @@ except ImportError:
     from bs4 import BeautifulSoup
 import re
 
-data = open('/root/ceph_report2.html')
+data = open('/root/ceph_report.html')
 structure = str(data.readlines())
 soup = BeautifulSoup(structure, 'html.parser')
 tables1 = str(soup.find_all(class_="table table-bordered table-striped")[1])
