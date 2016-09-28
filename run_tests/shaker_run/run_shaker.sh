@@ -32,7 +32,7 @@ source /root/openrc
 SERVER_ENDPOINT=$CONTROLLER_PUBLIC_IP
 printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
 apt-get update
-apt-get -y install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
+apt-get -y --force-yes install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
 
 iptables -I INPUT -s 10.0.0.0/8 -j ACCEPT
 iptables -I INPUT -s 172.16.0.0/16 -j ACCEPT
@@ -62,7 +62,7 @@ for item in ${COMPUTE_IP_ARRAY[@]};do
 #set -x
 printf 'deb http://ua.archive.ubuntu.com/ubuntu/ trusty universe' > /etc/apt/sources.list
 apt-get update
-apt-get -y install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
+apt-get -y --force-yes install iperf python-dev libzmq-dev python-pip && pip install pbr pyshaker
 
 iptables -I INPUT -s 10.0.0.0/8 -j ACCEPT
 iptables -I INPUT -s 172.16.0.0/16 -j ACCEPT
