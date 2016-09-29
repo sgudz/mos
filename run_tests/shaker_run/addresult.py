@@ -227,7 +227,7 @@ if __name__ == "__main__":
     test_glob_status = test_custom_median_status = test_custom_stdev_status = 1
     if median < float(base_median) * 0.9:
         test_glob_status = test_custom_median_status = 5
-    if stdev > float(base_stdev) * 0.5:
+    if stdev > float(base_stdev) * 1.2:
         test_custom_stdev_status = 5
     
     ### Collecting results
