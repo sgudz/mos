@@ -202,10 +202,10 @@ if __name__ == "__main__":
     elif l3ha and vlan and offloading:
         test_id = test8
     else:
-        #print "Wrong cluster config. DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
+        print "Wrong cluster config. DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading)
         #raise ClusterError("DVR: {0}, L3HA: {1}, VLAN: {2}, VXLAN: {3}, BETWEEN_NODES: {4}, OFFLOADING: {5}".format(dvr, l3ha, vlan, vxlan, between_nodes, offloading))
         #sys.exit("Wrong cluster config")
-        test_id = test8
+        test_id = 0
     
     base_median = client.send_get('get_test/{}'.format(test_id))['custom_test_case_steps'][0]['expected']
     base_stdev = client.send_get('get_test/{}'.format(test_id))['custom_test_case_steps'][1]['expected']
