@@ -29,4 +29,4 @@ tests:
                 cfg: ceph
                 params:
                     FILENAME: /dev/vdc
-                    TEST_FILE_SIZE: 10G
+                    TEST_FILE_SIZE: 1G
