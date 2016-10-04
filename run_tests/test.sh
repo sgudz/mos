@@ -23,7 +23,7 @@ apt-get -y --force-yes install iperf python-dev libzmq-dev python-pip && pip ins
 iptables -I INPUT -s 10.0.0.0/16 -j ACCEPT
 iptables -I INPUT -s 172.16.0.0/16 -j ACCEPT
 iptables -I INPUT -s 192.168.0.0/16 -j ACCEPT
-shaker-image-builder --flavor-vcpu 8 --flavor-ram 4096 --flavor-disk 55 --debug
+shaker-image-builder --flavor-vcpu 1 --flavor-ram 512 --flavor-disk 55 --debug
 SERVER_ENDPOINT=$CONTROLLER_PUBLIC_IP
 SERVER_PORT=18000
 shaker --server-endpoint \$SERVER_ENDPOINT:\$SERVER_PORT --scenario /usr/local/lib/python2.7/dist-packages/shaker/scenarios/openstack/VMs.yaml --report VMs_$DATE.html --debug
