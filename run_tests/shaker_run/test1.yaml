@@ -1,5 +1,5 @@
 include: default.yaml
-lab_name: env-19
+lab_name: CephTesting
 clouds:
     openstack:
         OS_TENANT_NAME: admin
@@ -20,5 +20,5 @@ tests:
           - io:
                 cfg: ceph
                 params:
-                    FILENAME: /dev/vdb
-                    TEST_FILE_SIZE: 100G
+                    FILENAME: /dev/vdc
+                    TEST_FILE_SIZE: 1G
