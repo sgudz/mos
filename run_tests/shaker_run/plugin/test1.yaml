@@ -12,7 +12,7 @@ clouds:
         ssh_creds: root:r00tme
 
         # openstack environment
-        openstack_env: ceph
+        openstack_env: CephTesting
 
 discover: fuel_openrc_only
 
