@@ -21,7 +21,7 @@ vm_configs:
             ram_size: 1024
             cpu_count: 2
 
-        vol_sz: 1
+        vol_sz: 700
         name_templ: wally-{group}-{id}
         aa_group_name: wally-aa-{0}
         security_group: wally_ssh_to_everyone
