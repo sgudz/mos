@@ -1,9 +1,0 @@
----
-
-processes:
-  collectd: collectd
-  nailgun: '"uwsgi.+nailgun"'
-  astute: astute
-  oswl: '"owsl_.+"'
-  postgresql: postgres
-  rabbitmq: '"rabbitmq.+server"'

@@ -1,8 +1,0 @@
-MOS_FUEL_PREFIX %{TIMESTAMP_ISO8601:fuel_timestamp} %{LOGLEVEL:fuel_level}:\s+%{GREEDYDATA:fuel_message}
-
-MOS_SERVICE %{TIMESTAMP_ISO8601:service_timestamp} %{NUMBER:process:int} %{LOGLEVEL:service_level} %{PROG:location} (?:\[(?:(?:req-%{UUID:request_id})?.+?)\])?\s*%{GREEDYDATA:service_message}
-
-HAPROXY5_TRAFFIC %{IP:client_ip}:%{INT:client_port:int} \[%{HAPROXYDATE:haproxy_date}\] %{NOTSPACE:frontend_name} %{NOTSPACE:backend_name}/%{NOTSPACE:server_name} %{GREEDYDATA:haproxy_message}
-HAPROXY5_HTTP_SF %{INT:time_request:int}/%{INT:time_queue:int}/%{INT:time_backend_connect:int}/%{INT:time_backend_response:int}/%{INT:time_duration:int} %{INT:http_status_code:int} %{NOTSPACE:bytes_read:int} %{DATA:captured_request_cookie} %{DATA:captured_response_cookie} %{NOTSPACE:termination_state} %{INT:actconn:int}/%{INT:feconn:int}/%{INT:beconn:int}/%{INT:srvconn:int}/%{NOTSPACE:retries:int} %{INT:srv_queue:int}/%{INT:backend_queue:int} (\{%{HAPROXYCAPTUREDREQUESTHEADERS}\})?( )?(\{%{HAPROXYCAPTUREDRESPONSEHEADERS}\})?( )?\"(<BADREQ>|(%{WORD:http_verb} (%{URIPROTO:http_proto}://)?(?:%{USER:http_user}(?::[^@]*)?@)?(?:%{URIHOST:http_host})?(?:%{URIPATHPARAM:http_request})?( HTTP/%{NUMBER:http_version})?))?\"
-HAPROXY5_TCP_SF %{INT:time_queue:int}/%{INT:time_backend_response:int}/%{INT:time_duration:int} %{INT:bytes_read:int} %{NOTSPACE:termination_state} %{INT:actconn:int}/%{INT:feconn:int}/%{INT:beconn:int}/%{INT:srvconn:int}/%{INT:retries:int} %{INT:srv_queue:int}/%{INT:backend_queue:int}
-

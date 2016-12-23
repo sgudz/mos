@@ -1,2 +1,0 @@
-[db]
-db_url = sqlite:////etc/scale_lab/lab-database.db
