@@ -1,41 +1,41 @@
-    auto lo
-    iface lo inet loopback
-        dns-nameservers 8.8.8.8
-        dns-search mcp10-ovs-dpdk.local maas
-    
-    auto enp10s0f0
-    iface enp10s0f0 inet static
-        address 10.20.0.17/24
-        dns-nameservers 8.8.8.8
-        mtu 1500
-    
-    auto enp10s0f1
-    iface enp10s0f1 inet manual
-        mtu 1500
-    
-    auto ens11f0
-    iface ens11f0 inet manual
-        mtu 1500
-    
-    auto ens11f1
-    iface ens11f1 inet manual
-        mtu 1500
-    
-    auto ens3f0
-    iface ens3f0 inet manual
-        mtu 1500
-    
-    auto ens3f1
-    iface ens3f1 inet manual
-        mtu 1500
-    
-    auto enp10s0f0.1801
-    iface enp10s0f0.1801 inet static
-        address 172.16.55.194/26
-        gateway 172.16.55.193
-        dns-nameservers 8.8.8.8
-        vlan_id 1801
-        vlan-raw-device enp10s0f0
-        mtu 1500
-    
-    source /etc/network/interfaces.d/*.cfg
+auto lo
+iface lo inet loopback
+    dns-nameservers 8.8.8.8
+    dns-search mcp10-ovs-dpdk.local maas
+
+auto enp10s0f0
+iface enp10s0f0 inet static
+    address 10.20.0.17/24
+    dns-nameservers 8.8.8.8
+    mtu 1500
+
+auto enp10s0f1
+iface enp10s0f1 inet manual
+    mtu 1500
+
+auto ens11f0
+iface ens11f0 inet manual
+    mtu 1500
+
+auto ens11f1
+iface ens11f1 inet manual
+    mtu 1500
+
+auto ens3f0
+iface ens3f0 inet manual
+    mtu 1500
+
+auto ens3f1
+iface ens3f1 inet manual
+    mtu 1500
+
+auto enp10s0f0.1801
+iface enp10s0f0.1801 inet static
+    address 172.16.55.194/26
+    gateway 172.16.55.193
+    dns-nameservers 8.8.8.8
+    vlan_id 1801
+    vlan-raw-device enp10s0f0
+    mtu 1500
+
+source /etc/network/interfaces.d/*.cfg
